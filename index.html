@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>MyyShop Pressroom</title>
+<meta name="description" content="Press coverage, media mentions, and brand resources for journalists covering MyyShop."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+:root{
+  --g1:#26F247;--g2:#01E9CB;
+  --dark-green:#0B622D;--mid-green:#00796A;
+  --black:#272727;--warm-off:#EFF4ED;--sand:#F2EEE0;
+  --muted:#919D8E;--white:#ffffff;--nav-bg:#EFEFED;
+  --r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--black);line-height:1.6;min-height:100vh}
+
+/* NAV */
+.nav{background:var(--nav-bg);border-bottom:1px solid rgba(39,39,39,.1);padding:0 40px;height:56px;display:flex;align-items:center;position:sticky;top:0;z-index:100}
+.nav-brand{display:flex;align-items:center;gap:0;cursor:pointer;text-decoration:none}
+.nav-logo-img{height:28px;width:auto;display:block}
+.nav-divider{width:1px;height:20px;background:rgba(39,39,39,.15);margin:0 20px;flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:2px;flex:1}
+.nav-link{font-size:14px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:6px;cursor:pointer;transition:color .15s,background .15s;text-decoration:none;white-space:nowrap}
+.nav-link:hover{color:var(--black);background:rgba(39,39,39,.06)}
+.nav-cta{margin-left:auto;background:var(--g1);color:var(--black);font-size:13px;font-weight:700;padding:8px 20px;border-radius:24px;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;transition:background .15s}
+.nav-cta:hover{background:var(--g2)}
+
+/* HERO */
+.hero{background:var(--black);padding:80px 40px 72px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero-eye{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--g1);margin-bottom:16px}
+.hero h1{font-size:52px;font-weight:700;color:var(--white);line-height:1.1;letter-spacing:-1.5px;max-width:700px;margin-bottom:16px}
+.hero h1 span{background:linear-gradient(90deg,var(--g1),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{color:rgba(255,255,255,.45);font-size:16px;max-width:460px;line-height:1.65}
+
+/* SECTIONS */
+.section{padding:52px 40px;border-bottom:1px solid rgba(39,39,39,.08)}
+.section.alt{background:var(--white)}
+.section.sand{background:var(--sand)}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:28px}
+.sec-num{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.sec-title{font-size:22px;font-weight:700;letter-spacing:-.4px;color:var(--black)}
+
+/* FEATURE CARD */
+.feat-card{background:var(--black);border-radius:var(--r);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;cursor:pointer;transition:transform .2s;margin-bottom:16px;text-decoration:none}
+.feat-card:hover{transform:translateY(-2px)}
+.feat-body{padding:36px 32px;display:flex;flex-direction:column;justify-content:space-between}
+.feat-img{background:linear-gradient(135deg,var(--dark-green) 0%,var(--mid-green) 100%);min-height:200px;position:relative;overflow:hidden}
+.feat-deco{position:absolute;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));opacity:.18}
+.feat-pub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g1);margin-bottom:10px}
+.feat-title{font-size:20px;font-weight:700;color:var(--white);line-height:1.3;letter-spacing:-.3px;margin-bottom:14px}
+.feat-meta{font-size:12px;color:rgba(255,255,255,.35)}
+.feat-cta{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--g1);margin-top:20px}
+.feat-card:hover .feat-cta{color:var(--g2)}
+
+/* ARTICLE GRID */
+.art-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.art-card{background:var(--white);border-radius:var(--r);padding:20px;border:1px solid rgba(39,39,39,.08);cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;min-height:155px;text-decoration:none}
+.art-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(39,39,39,.07)}
+.art-pub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid-green);margin-bottom:8px}
+.art-title{font-size:13px;font-weight:600;color:var(--black);line-height:1.45;flex:1}
+.art-date{font-size:11px;color:var(--muted);margin-top:14px}
+
+/* MENTIONS */
+.mention-list{display:flex;flex-direction:column;gap:10px}
+.mention-card{background:var(--white);border-radius:var(--rs);border-left:3px solid var(--g1);padding:16px 20px;cursor:pointer;transition:transform .15s;display:flex;gap:16px;align-items:flex-start;text-decoration:none}
+.mention-card:hover{transform:translateX(3px)}
+.mention-src{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-green);min-width:72px;padding-top:2px;flex-shrink:0}
+.mention-quote{font-size:14px;color:var(--black);line-height:1.55;flex:1}
+.mention-quote em{font-style:normal;color:var(--mid-green);font-weight:600}
+.mention-date{font-size:11px;color:var(--muted);min-width:52px;text-align:right;padding-top:2px;flex-shrink:0}
+
+/* FEATURED IN */
+.logo-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.logo-chip{background:var(--white);border:1px solid rgba(39,39,39,.08);border-radius:var(--rs);padding:14px 10px;text-align:center;font-size:13px;font-weight:600;color:var(--muted);transition:border-color .2s,color .2s}
+.logo-chip:hover{border-color:var(--g1);color:var(--dark-green)}
+
+
+/* CONTACT */
+.contact-bar{background:var(--black);border-radius:var(--r);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.contact-h{font-size:17px;font-weight:700;color:var(--white);margin-bottom:4px}
+.contact-bar p{color:rgba(255,255,255,.45);font-size:14px}
+.contact-email{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(90deg,var(--g1),var(--g2));color:var(--black);font-size:13px;font-weight:700;padding:10px 20px;border-radius:24px;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:opacity .15s}
+.contact-email:hover{opacity:.85}
+
+/* FOOTER */
+footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32px}
+.footer-top{display:grid;grid-template-columns:200px 1fr 1fr auto;gap:40px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-brand-logo{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.footer-brand-name{font-size:15px;font-weight:700;color:var(--white)}
+.footer-tagline{font-size:12px;line-height:1.6;color:rgba(255,255,255,.4);max-width:180px}
+.footer-addr{font-size:11px;color:rgba(255,255,255,.25);margin-top:8px;line-height:1.6}
+.footer-col-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:13px;color:rgba(255,255,255,.55);text-decoration:none;transition:color .15s}
+.footer-col ul li a:hover{color:var(--g1)}
+.footer-social{display:flex;flex-direction:column;gap:10px}
+.footer-social a{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.55);text-decoration:none;transition:color .15s}
+.footer-social a:hover{color:var(--g1)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:24px;gap:16px;flex-wrap:wrap}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .15s}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+
+/* ARTICLE SUB-PAGE */
+#art-page{display:none;position:fixed;inset:0;background:var(--warm-off);z-index:200;overflow-y:auto}
+#art-page.active{display:block}
+.art-back{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;padding:16px 40px;background:var(--nav-bg);border-bottom:1px solid rgba(39,39,39,.1);transition:color .15s;user-select:none}
+.art-back:hover{color:var(--dark-green)}
+.art-content{max-width:700px;margin:0 auto;padding:52px 40px 96px}
+.art-pub-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-green);background:rgba(11,98,45,.09);padding:4px 10px;border-radius:16px;margin-bottom:18px}
+.art-content h1{font-size:32px;font-weight:700;letter-spacing:-.8px;line-height:1.18;color:var(--black);margin-bottom:14px}
+.art-meta{font-size:13px;color:var(--muted);margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(39,39,39,.1)}
+.art-cover{width:100%;height:280px;border-radius:var(--r);object-fit:cover;margin-bottom:32px;display:block}
+.art-cover-placeholder{width:100%;height:280px;border-radius:var(--r);background:linear-gradient(135deg,var(--dark-green),var(--mid-green));margin-bottom:32px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.art-cover-placeholder span{color:rgba(255,255,255,.25);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;position:relative;z-index:1}
+.art-cover-placeholder::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));opacity:.12;top:-50px;right:-30px}
+.art-body{font-size:16px;line-height:1.8;color:var(--black)}
+.art-body p{margin-bottom:20px}
+.art-body h2{font-size:20px;font-weight:700;letter-spacing:-.3px;margin:32px 0 12px}
+.art-body blockquote{border-left:3px solid var(--g1);padding:12px 20px;margin:24px 0;background:rgba(38,242,71,.06);border-radius:0 var(--rs) var(--rs) 0;font-style:italic;color:var(--dark-green)}
+.art-body img{width:100%;border-radius:var(--rs);margin:20px 0;display:block}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav{padding:0 20px}
+  .nav-links{display:none}
+  .hero{padding:48px 20px 40px}
+  .hero h1{font-size:32px}
+  .section{padding:40px 20px}
+  .feat-card{grid-template-columns:1fr}
+  .feat-img{min-height:140px}
+  .kit-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr;gap:28px}
+  .art-content{padding:36px 20px 72px}
+  .art-content h1{font-size:26px}
+  .contact-bar{flex-direction:column;align-items:flex-start}
+  .art-back{padding:14px 20px}
+  footer{padding:40px 20px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- =============================================
+  NAV
+============================================= -->
+<nav class="nav">
+  <a class="nav-brand" href="https://www.myyshop.com" target="_blank" rel="noopener" aria-label="MyyShop">
+    <img src="data:image/png;base64,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" alt="MyyShop" style="height:24px;width:auto;display:block;" />
+  </a>
+  <div class="nav-divider"></div>
+  <div class="nav-links">
+    <a class="nav-link" href="#sec-news">In the News</a>
+    <a class="nav-link" href="#sec-featuredin">Featured In</a>
+    <a class="nav-link" href="#sec-mentions">Media Mentions</a>
+  </div>
+  <a class="nav-cta" href="https://www.myyshop.com/" target="_blank" rel="noopener">Log In →</a>
+</nav>
+
+<!-- =============================================
+  HERO
+============================================= -->
+<section class="hero">
+  <div class="hero-eye">MyyShop · Press &amp; Media</div>
+  <h1>Stories about <span>global trade</span>,<br>told by the world.</h1>
+  <p class="hero-sub">Press coverage, media mentions, and resources for journalists covering MyyShop.</p>
+</section>
+
+<!-- =============================================
+  SECTION 1 — IN THE NEWS
+  ┌─ 如何新增文章 ───────────────────────────────
+  │ 1. 复制下方任意一个 <a class="art-card"> 块
+  │ 2. 粘贴到 art-grid 里（保持在注释行上方）
+  │ 3. 填写 data-pub / data-title / data-meta /
+  │    data-cover（封面图URL，没有可留空）/
+  │    data-body（文章正文HTML）
+  │ 4. 同步修改卡片内的 art-pub / art-title / art-date 显示文字
+  │
+  │ 如需更换大特稿卡，修改 feat-card 上的同名属性即可。
+  └──────────────────────────────────────────────
+============================================= -->
+<section class="section" id="sec-news">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <span class="sec-title">In the News</span>
+  </div>
+
+  <!-- ★ 大特稿卡 — 每次只保留一张 ★ -->
+  <a class="feat-card" href="javascript:void(0)"
+    data-pub="TechCrunch"
+    data-title="How MyyShop is opening global e-commerce to everyday creators"
+    data-meta="By Sarah Lin · June 2026"
+    data-cover=""
+    data-body="&lt;p&gt;When MyyShop launched its creator marketplace two years ago, it made a bet most platforms considered foolish: that the seller experience mattered as much as the buyer experience. Today, with over 200,000 active merchants across 40 countries, that bet is paying off.&lt;/p&gt;&lt;blockquote&gt;&ldquo;We were told global trade was too complex for small creators. We believed the opposite — that simplicity was the missing infrastructure.&rdquo;&lt;/blockquote&gt;&lt;h2&gt;A community built on trust&lt;/h2&gt;&lt;p&gt;The platform&rsquo;s logo — a smiling face drawn from the curves of the Dunhuang desert — captures the company&rsquo;s founding philosophy: commerce should feel human, even when it&rsquo;s global.&lt;/p&gt;&lt;p&gt;Average seller revenue has grown 3.4&times; in the past 12 months. Retention is among the highest in the sector.&lt;/p&gt;&lt;h2&gt;What comes next&lt;/h2&gt;&lt;p&gt;MyyShop&rsquo;s Series B will fund expansion into the Middle East and Latin America. New tools for live commerce and affiliate programs are expected later this year.&lt;/p&gt;">
+    <div class="feat-body">
+      <div>
+        <div class="feat-pub">TechCrunch</div>
+        <div class="feat-title">How MyyShop is opening global e-commerce to everyday creators</div>
+        <div class="feat-meta">Full coverage · June 2026</div>
+      </div>
+      <span class="feat-cta">Read full story <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
+    </div>
+    <div class="feat-img">
+      <div class="feat-deco" style="width:120px;height:120px;top:-30px;right:-30px"></div>
+      <div class="feat-deco" style="width:70px;height:70px;bottom:24px;left:24px;opacity:.1"></div>
+    </div>
+  </a>
+
+  <!-- 文章卡片格 -->
+  <div class="art-grid">
+
+    <a class="art-card" href="javascript:void(0)"
+      data-pub="Forbes Asia"
+      data-title="The desert oasis of social commerce: inside MyyShop's community model"
+      data-meta="By David Chen · May 14, 2026"
+      data-cover=""
+      data-body="&lt;p&gt;In the vast landscape of social commerce platforms, most burn bright and fade fast. MyyShop, the Singapore-based marketplace, seems to have found something more durable: a genuine community.&lt;/p&gt;&lt;blockquote&gt;&ldquo;Growth in isolation isn&rsquo;t growth. We want every seller&rsquo;s success to pull up the sellers around them.&rdquo;&lt;/blockquote&gt;&lt;h2&gt;The mechanics of community&lt;/h2&gt;&lt;p&gt;Unlike platforms that treat merchant relationships as purely transactional, MyyShop invests heavily in its seller community infrastructure. Monthly virtual markets, peer mentorship programs, and a public creator leaderboard are all part of the mix.&lt;/p&gt;">
+      <div class="art-pub">Forbes Asia</div>
+      <div class="art-title">The desert oasis of social commerce: inside MyyShop's community model</div>
+      <div class="art-date">May 2026</div>
+    </a>
+
+    <a class="art-card" href="javascript:void(0)"
+      data-pub="Wired"
+      data-title="Creator-first platforms are rewriting the rules of global trade"
+      data-meta="By Maya Okonkwo · April 8, 2026"
+      data-cover=""
+      data-body="&lt;p&gt;The creator economy has spawned a generation of platforms built around helping individuals monetize their audiences. MyyShop is one of a small group trying to take creators global.&lt;/p&gt;&lt;h2&gt;The trust layer&lt;/h2&gt;&lt;p&gt;What differentiates MyyShop from generic dropshipping platforms is its reputation system. Sellers build verified track records that travel with them, giving buyers confidence in merchants they&rsquo;ve never heard of.&lt;/p&gt;">
+      <div class="art-pub">Wired</div>
+      <div class="art-title">Creator-first platforms are rewriting the rules of global trade</div>
+      <div class="art-date">April 2026</div>
+    </a>
+
+    <a class="art-card" href="javascript:void(0)"
+      data-pub="Business Insider"
+      data-title="MyyShop raises its Series B to expand creator monetization tools"
+      data-meta="By James Park · March 22, 2026"
+      data-cover=""
+      data-body="&lt;p&gt;MyyShop announced today it has closed a $40 million Series B round. The company will use the capital to accelerate expansion into the Middle East and Latin America.&lt;/p&gt;&lt;blockquote&gt;&ldquo;This funding lets us compress a three-year roadmap into twelve months.&rdquo;&lt;/blockquote&gt;">
+      <div class="art-pub">Business Insider</div>
+      <div class="art-title">MyyShop raises its Series B to expand creator monetization tools</div>
+      <div class="art-date">March 2026</div>
+    </a>
+
+    <!-- 在此处复制新 art-card 块 ↑ -->
+
+  </div>
+</section>
+
+<!-- =============================================
+  SECTION 3 — FEATURED IN
+  ┌─ 如何新增媒体名称 ───────────────────────────
+  │ 复制一行 <div class="logo-chip">媒体名称</div> 即可
+  └──────────────────────────────────────────────
+============================================= -->
+<section class="section alt" id="sec-featuredin">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <span class="sec-title">Featured In</span>
+  </div>
+  <div class="logo-wall">
+    <div class="logo-chip">Shopify Blog</div>
+    <div class="logo-chip">Hacker News</div>
+    <div class="logo-chip">ProductHunt</div>
+    <div class="logo-chip">a16z Blog</div>
+    <div class="logo-chip">TechInAsia</div>
+    <div class="logo-chip">KrASIA</div>
+    <div class="logo-chip">36Kr</div>
+    <div class="logo-chip">Pandaily</div>
+    <div class="logo-chip">EcommerceDB</div>
+    <div class="logo-chip">InfluenceWeek</div>
+    <!-- 在此处添加新 logo-chip ↑ -->
+  </div>
+</section>
+
+<!-- =============================================
+  SECTION 2 — MEDIA MENTIONS
+  ┌─ 如何新增引用片段 ───────────────────────────
+  │ 1. 复制一个 <a class="mention-card"> 块
+  │ 2. 填写 data-pub / data-title / data-meta / data-body
+  │ 3. 在 mention-quote 内用 <em> 包住品牌名（高亮绿色）
+  └──────────────────────────────────────────────
+============================================= -->
+<section class="section" id="sec-mentions">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <span class="sec-title">Media Mentions</span>
+  </div>
+  <div class="mention-list">
+
+    <a class="mention-card" href="javascript:void(0)"
+      data-pub="Bloomberg"
+      data-title='Referenced in "The Social Commerce Reckoning"'
+      data-meta="Bloomberg · June 2026"
+      data-cover=""
+      data-body="&lt;p&gt;This mention appeared in Bloomberg&rsquo;s in-depth analysis of social commerce platforms and their ability to scale globally while maintaining community integrity.&lt;/p&gt;&lt;blockquote&gt;Platforms like MyyShop are demonstrating that social commerce can scale globally without losing the intimacy of community &mdash; a balance most marketplaces have failed to strike.&lt;/blockquote&gt;&lt;p&gt;The full piece is available to Bloomberg subscribers at bloomberg.com.&lt;/p&gt;">
+      <span class="mention-src">Bloomberg</span>
+      <span class="mention-quote">Platforms like <em>MyyShop</em> are demonstrating that social commerce can scale globally without losing the intimacy of community — a balance most marketplaces have failed to strike.</span>
+      <span class="mention-date">Jun 2026</span>
+    </a>
+
+    <a class="mention-card" href="javascript:void(0)"
+      data-pub="The Economist"
+      data-title='Referenced in "The New Silk Road"'
+      data-meta="The Economist · May 2026"
+      data-cover=""
+      data-body="&lt;p&gt;The Economist&rsquo;s survey of cross-border trade platforms included MyyShop among a cohort of companies reshaping how small merchants access global markets.&lt;/p&gt;&lt;blockquote&gt;MyyShop has found an unlikely home at the intersection of the creator economy and cross-border trade, signing up thousands of micro-merchants in its first year.&lt;/blockquote&gt;">
+      <span class="mention-src">The Economist</span>
+      <span class="mention-quote"><em>MyyShop</em> has found an unlikely home at the intersection of the creator economy and cross-border trade, signing up thousands of micro-merchants in its first year.</span>
+      <span class="mention-date">May 2026</span>
+    </a>
+
+    <a class="mention-card" href="javascript:void(0)"
+      data-pub="Reuters"
+      data-title='Referenced in "Social Commerce Heats Up"'
+      data-meta="Reuters · April 2026"
+      data-cover=""
+      data-body="&lt;p&gt;Reuters covered the competitive landscape in social commerce, noting MyyShop&rsquo;s distinct positioning around emerging market sellers.&lt;/p&gt;&lt;blockquote&gt;Among the new wave of social commerce apps, MyyShop stands out for its focus on emerging market sellers accessing global buyers.&lt;/blockquote&gt;">
+      <span class="mention-src">Reuters</span>
+      <span class="mention-quote">Among the new wave of social commerce apps, <em>MyyShop</em> stands out for its focus on emerging market sellers accessing global buyers.</span>
+      <span class="mention-date">Apr 2026</span>
+    </a>
+
+    <a class="mention-card" href="javascript:void(0)"
+      data-pub="Nikkei Asia"
+      data-title='Referenced in "The Investor View on Creator Commerce"'
+      data-meta="Nikkei Asia · March 2026"
+      data-cover=""
+      data-body="&lt;p&gt;Nikkei Asia&rsquo;s investor roundup on the creator economy included MyyShop as a company drawing significant cross-border interest from VCs.&lt;/p&gt;&lt;blockquote&gt;MyyShop&rsquo;s model &mdash; putting creators at the center of the transaction &mdash; is attracting attention from investors across Southeast Asia and the Middle East.&lt;/blockquote&gt;">
+      <span class="mention-src">Nikkei Asia</span>
+      <span class="mention-quote"><em>MyyShop</em>'s model — putting creators at the center of the transaction — is attracting attention from investors across Southeast Asia and the Middle East.</span>
+      <span class="mention-date">Mar 2026</span>
+    </a>
+
+    <!-- 在此处复制新 mention-card 块 ↑ -->
+
+  </div>
+</section>
+
+
+
+
+<!-- =============================================
+  FOOTER
+============================================= -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-logo">
+        <img src="data:image/jpeg;base64,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" alt="MyyShop" style="height:24px;width:auto;display:block;mix-blend-mode:lighten;" />
+        
+      </div>
+      <p class="footer-tagline">Turn your social impact into a good business.</p>
+      <p class="footer-addr">6161 Santa Monica Blvd.,<br>Los Angeles, CA 90038</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Company</div>
+      <ul>
+        <li><a href="https://www.myyshop.com/about-us" target="_blank">About Us</a></li>
+        <li><a href="https://www.myyshop.com/blog" target="_blank">Blog</a></li>
+        <li><a href="https://www.myyshop.com/for-brands" target="_blank">For Brands</a></li>
+        <li><a href="https://www.myyshop.com/for-creators" target="_blank">For Creators</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Products</div>
+      <ul>
+        <li><a href="https://www.myyshop.com/earn-from-every-view-myyfinds" target="_blank">MyyFinds — Earn from Views</a></li>
+        <li><a href="https://www.myyshop.com/brand-deals-opportunies" target="_blank">Opportunities — Brand Deals</a></li>
+        <li><a href="https://www.myyshop.com/report" target="_blank">Get Your Free Value Report</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Follow Us</div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/myyshopcreators" target="_blank" rel="noopener"><i class="ti ti-brand-instagram" aria-hidden="true"></i>Instagram</a>
+        <a href="https://www.tiktok.com/@myyshopcreators" target="_blank" rel="noopener"><i class="ti ti-brand-tiktok" aria-hidden="true"></i>TikTok</a>
+        <a href="mailto:support@myyshop.com"><i class="ti ti-mail" aria-hidden="true"></i>support@myyshop.com</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>
+      <div class="footer-copy">© 2020–2026 MyyShop Inc. All Rights Reserved.</div>
+      <div style="margin-top:4px"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color:rgba(255,255,255,.2);text-decoration:none;font-size:11px">京ICP备18054285号</a></div>
+    </div>
+    <div class="footer-legal">
+      <a href="https://www.myyshop.com/docs/termsCondition" target="_blank">Terms of Service</a>
+      <a href="https://www.myyshop.com/docs/privacy" target="_blank">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+  ARTICLE SUB-PAGE OVERLAY
+============================================= -->
+<div id="art-page" role="dialog" aria-modal="true" aria-label="Article">
+  <div class="art-back" onclick="closeArt()" tabindex="0" role="button" aria-label="Back to Pressroom">
+    <i class="ti ti-arrow-left" aria-hidden="true"></i> Back to Pressroom
+  </div>
+  <div class="art-content">
+    <span class="art-pub-tag" id="ap-pub"></span>
+    <h1 id="ap-title"></h1>
+    <div class="art-meta" id="ap-meta"></div>
+    <div id="ap-cover-wrap"></div>
+    <div class="art-body" id="ap-body"></div>
+  </div>
+</div>
+
+<!-- =============================================
+  JAVASCRIPT
+============================================= -->
+<script>
+function openArt(el) {
+  document.getElementById('ap-pub').textContent   = el.dataset.pub   || '';
+  document.getElementById('ap-title').textContent = el.dataset.title || '';
+  document.getElementById('ap-meta').textContent  = el.dataset.meta  || '';
+
+  var cover = el.dataset.cover || '';
+  var coverWrap = document.getElementById('ap-cover-wrap');
+  if (cover) {
+    coverWrap.innerHTML = '<img class="art-cover" src="' + cover + '" alt="' + (el.dataset.title||'') + '"/>';
+  } else {
+    coverWrap.innerHTML = '<div class="art-cover-placeholder"><span>Cover image</span></div>';
+  }
+
+  document.getElementById('ap-body').innerHTML = el.dataset.body || '';
+
+  var page = document.getElementById('art-page');
+  page.classList.add('active');
+  page.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+
+  /* ── 埋点位置：取消注释并替换为你的实际 tracker ──
+  if (window.gtag) {
+    gtag('event', 'press_article_open', {
+      article_title: el.dataset.title,
+      publication:   el.dataset.pub
+    });
+  }
+  ── */
+}
+
+function closeArt() {
+  document.getElementById('art-page').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeArt();
+});
+
+document.querySelector('.art-back').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.key === ' ') closeArt();
+});
+
+document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(function(el) {
+  el.addEventListener('click', function() { openArt(el); });
+});
+</script>
+
+</body>
+</html>
