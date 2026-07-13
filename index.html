@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>MyyShop Pressroom</title>
 <meta name="description" content="Press coverage, media mentions, and brand resources for journalists covering MyyShop."/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T8T33F8138"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-T8T33F8138');
+  function trackEvent(n,p){gtag('event',n,p);}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
@@ -466,6 +475,247 @@ document.querySelector('.art-back').addEventListener('keydown', function(e) {
 document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(function(el) {
   el.addEventListener('click', function() { openArt(el); });
 });
+</script>
+
+<!-- =============================================
+  接入内容后台数据库
+============================================= -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var SUPABASE_URL = 'https://vnjhzybdsxttmsmfwsku.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_5Ffo4fNgEMGpFFtLFkh9ug_dWObFB1g';
+  var client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  function escapeText(str){
+    var d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  function pageSectionOf(item){
+    if (item.content_block === 'mention') return 'media_mentions';
+    return 'in_the_news'; // feature / article 都算在In the News板块里
+  }
+
+  function bindOpen(el, item, position){
+    el.addEventListener('click', function(){
+      trackEvent('press_card_click', {
+        content_id: item.id,
+        content_title: item.title || '',
+        page_section: pageSectionOf(item),
+        content_block: item.content_block || '',
+        source_name: item.source_name || '',
+        list_position: (typeof position === 'number') ? position : null
+      });
+      window.location.href = 'article.html?id=' + item.id;
+    });
+  }
+
+  // 如果内容有外部原文链接,在正文末尾自动加一个"阅读全文"的引导链接
+  function appendReadMoreLink(bodyHtml, item){
+    if (!item.external_url) return bodyHtml;
+    var label = item.source_name ? ('阅读 ' + item.source_name + ' 全文') : '阅读原文';
+    return (bodyHtml || '') +
+      '<p style="margin-top:24px"><a href="' + item.external_url + '" target="_blank" rel="noopener" ' +
+      'style="font-weight:600;color:var(--dark-green);text-decoration:none">' + label + ' →</a></p>';
+  }
+
+  function setCardData(el, item){
+    el.dataset.pub = item.source_name || '';
+    el.dataset.title = item.title || '';
+    el.dataset.meta = item.byline || '';
+    el.dataset.cover = item.media_url || '';
+    el.dataset.body = appendReadMoreLink(item.description || '', item);
+  }
+
+  function formatDate(dateStr){
+    if (!dateStr) return '';
+    var d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  }
+
+  function renderFeature(item){
+    var old = document.querySelector('.feat-card');
+    if (!old) return;
+    if (!item){ old.style.display = 'none'; return; }
+    old.style.display = '';
+    setCardData(old, item);
+    old.querySelector('.feat-pub').textContent = item.source_name || '';
+    old.querySelector('.feat-title').textContent = item.title || '';
+    old.querySelector('.feat-meta').textContent = item.byline || '';
+
+    var imgArea = old.querySelector('.feat-img');
+    if (imgArea) {
+      var existingImg = imgArea.querySelector('.feat-cover-img');
+      var decos = imgArea.querySelectorAll('.feat-deco');
+      if (item.media_url) {
+        if (!existingImg) {
+          existingImg = document.createElement('img');
+          existingImg.className = 'feat-cover-img';
+          existingImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:contain';
+          imgArea.insertBefore(existingImg, imgArea.firstChild);
+        }
+        existingImg.src = item.media_url;
+        existingImg.alt = item.title || '';
+        for (var i = 0; i < decos.length; i++) decos[i].style.display = 'none';
+      } else {
+        if (existingImg) existingImg.remove();
+        for (var j = 0; j < decos.length; j++) decos[j].style.display = '';
+      }
+    }
+
+    // 页面最早的静态绑定(写死openArt)还挂在这个元素上,克隆一份替换掉,
+    // 才能让"有外部链接就跳转"这个新逻辑生效,避免两套点击行为叠加
+    var fresh = old.cloneNode(true);
+    old.replaceWith(fresh);
+    bindOpen(fresh, item, 0);
+  }
+
+  // ── 文章网格:响应式只显示"一行",超出的收起 ──
+  var articleGridEl = null;
+  var articleExpanded = false;
+
+  function layoutArticleGrid(){
+    if (!articleGridEl) return;
+    var cards = articleGridEl.querySelectorAll('.art-card');
+    var btn = document.getElementById('artShowMoreBtn');
+    if (!cards.length) { if (btn) btn.style.display = 'none'; return; }
+
+    // 先全部显示,才能量出每张卡片真实所在的行位置
+    for (var i = 0; i < cards.length; i++) cards[i].style.display = '';
+
+    var firstTop = cards[0].offsetTop;
+    var hiddenCards = [];
+    for (var j = 0; j < cards.length; j++) {
+      if (cards[j].offsetTop !== firstTop) hiddenCards.push(cards[j]);
+    }
+
+    if (!articleExpanded) {
+      hiddenCards.forEach(function(c){ c.style.display = 'none'; });
+    }
+
+    if (btn) {
+      if (hiddenCards.length > 0) {
+        btn.style.display = '';
+        btn.textContent = articleExpanded ? '收起 ↑' : '查看更多 (' + hiddenCards.length + ') ↓';
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+  }
+
+  function renderArticles(items){
+    var grid = document.querySelector('.art-grid');
+    if (!grid) return;
+    articleGridEl = grid;
+    articleExpanded = false;
+    grid.innerHTML = '';
+
+    items.forEach(function(item, idx){
+      var a = document.createElement('a');
+      a.className = 'art-card';
+      a.href = 'javascript:void(0)';
+      setCardData(a, item);
+      a.innerHTML =
+        '<div class="art-pub">' + escapeText(item.source_name) + '</div>' +
+        '<div class="art-title">' + escapeText(item.title) + '</div>' +
+        '<div class="art-date">' + formatDate(item.published_at) + '</div>';
+      bindOpen(a, item, idx);
+      grid.appendChild(a);
+    });
+
+    var existingBtn = document.getElementById('artShowMoreBtn');
+    if (existingBtn) existingBtn.remove();
+
+    if (items.length > 0) {
+      var btn = document.createElement('button');
+      btn.id = 'artShowMoreBtn';
+      btn.type = 'button';
+      btn.style.cssText = 'display:inline-flex;align-items:center;gap:6px;margin-top:16px;background:none;border:1px solid rgba(39,39,39,.15);padding:8px 18px;border-radius:24px;font-size:13px;font-weight:600;color:var(--dark-green);cursor:pointer;font-family:inherit';
+      btn.addEventListener('click', function(){
+        var willExpand = !articleExpanded;
+        if (willExpand) {
+          var hiddenEls = Array.prototype.filter.call(grid.querySelectorAll('.art-card'), function(c){ return c.style.display === 'none'; });
+          trackEvent('press_articles_expand', { hidden_count: hiddenEls.length });
+        }
+        articleExpanded = willExpand;
+        layoutArticleGrid();
+      });
+      grid.insertAdjacentElement('afterend', btn);
+    }
+
+    // 等浏览器把网格实际排版完,再测量哪些卡片在第一行
+    requestAnimationFrame(layoutArticleGrid);
+  }
+
+  // 窗口大小变化(比如转屏、拉伸浏览器窗口)时,重新计算一行能放几张
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){
+      articleExpanded = false;
+      layoutArticleGrid();
+    }, 200);
+  });
+
+  function renderMentions(items){
+    var list = document.querySelector('.mention-list');
+    if (!list) return;
+    list.innerHTML = '';
+    items.forEach(function(item, idx){
+      var a = document.createElement('a');
+      a.className = 'mention-card';
+      a.href = 'javascript:void(0)';
+      setCardData(a, item);
+      a.innerHTML =
+        '<span class="mention-src">' + escapeText(item.source_name) + '</span>' +
+        '<span class="mention-quote">' + (item.description || '') + '</span>' +
+        '<span class="mention-date">' + formatDate(item.published_at) + '</span>';
+      bindOpen(a, item, idx);
+      list.appendChild(a);
+    });
+  }
+
+  function renderLogos(items){
+    var wall = document.querySelector('.logo-wall');
+    if (!wall) return;
+    wall.innerHTML = '';
+    items.forEach(function(item){
+      var div = document.createElement('div');
+      div.className = 'logo-chip';
+      div.textContent = item.title || '';
+      wall.appendChild(div);
+    });
+  }
+
+  async function loadPRContent(){
+    var result = await client
+      .from('content_items')
+      .select('*')
+      .eq('page_type', 'pr')
+      .eq('status', 'published')
+      .order('sort_order', { ascending: true });
+
+    if (result.error) {
+      console.error('加载PR内容失败:', result.error);
+      return; // 加载失败时不动原有内容,避免页面变空白
+    }
+    var data = result.data || [];
+
+    var feature = data.find(function(i){ return i.content_block === 'feature'; });
+    var articles = data.filter(function(i){ return i.content_block === 'article'; });
+    var mentions = data.filter(function(i){ return i.content_block === 'mention'; });
+    var logos = data.filter(function(i){ return i.content_block === 'logo'; });
+
+    renderFeature(feature);
+    renderArticles(articles);
+    renderMentions(mentions);
+    renderLogos(logos);
+  }
+
+  loadPRContent();
+})();
 </script>
 
 </body>
