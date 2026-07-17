@@ -295,11 +295,28 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
 </section>
 
 <!-- =============================================
-  SECTION 2 — MEDIA MENTIONS
+  SECTION 3 — MEDIA MENTIONS
   ┌─ 如何新增引用片段 ───────────────────────────
-  │ 1. 复制一个 <a class="mention-card">
-      <div class="mention-header"><span class="mention-src"></span><span class="mention-date"></span></div>
-      <div class="mention-title"></div>
+  │ 1. 复制一个 <a class="mention-card"> 块
+  │ 2. 填写 data-pub / data-title / data-meta / data-body
+  │ 3. 在 mention-excerpt 内用 <em> 包住品牌名（高亮绿色）
+  └──────────────────────────────────────────────
+============================================= -->
+<section class="section" id="sec-mentions">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <span class="sec-title">Media Mentions</span>
+  </div>
+  <div class="mention-list">
+
+    <a class="mention-card" href="javascript:void(0)"
+      data-pub="Bloomberg"
+      data-title='Referenced in "The Social Commerce Reckoning"'
+      data-meta="Bloomberg · June 2026"
+      data-cover=""
+      data-body="&lt;p&gt;This mention appeared in Bloomberg&rsquo;s in-depth analysis of social commerce platforms and their ability to scale globally while maintaining community integrity.&lt;/p&gt;&lt;blockquote&gt;Platforms like MyyShop are demonstrating that social commerce can scale globally without losing the intimacy of community &mdash; a balance most marketplaces have failed to strike.&lt;/blockquote&gt;&lt;p&gt;The full piece is available to Bloomberg subscribers at bloomberg.com.&lt;/p&gt;">
+      <div class="mention-header"><span class="mention-src">Bloomberg</span><span class="mention-date">Jun 2026</span></div>
+      <div class="mention-title">Referenced in "The Social Commerce Reckoning"</div>
       <div class="mention-excerpt">Platforms like <em>MyyShop</em> are demonstrating that social commerce can scale globally without losing the intimacy of community — a balance most marketplaces have failed to strike.</div>
       <span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
     </a>
