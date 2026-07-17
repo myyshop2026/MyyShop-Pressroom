@@ -70,21 +70,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .feat-card:hover .feat-cta{color:var(--g2)}
 
 /* ARTICLE GRID */
-.art-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.art-card{background:var(--white);border-radius:var(--r);padding:24px;border:1px solid rgba(39,39,39,.08);cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;min-height:175px;text-decoration:none}
+.art-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.art-card{background:var(--white);border-radius:var(--r);padding:28px;border:1px solid rgba(39,39,39,.08);cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;min-height:160px;text-decoration:none}
 .art-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(39,39,39,.07)}
 .art-pub{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid-green);margin-bottom:10px}
-.art-title{font-size:14.5px;font-weight:600;color:var(--black);line-height:1.45;flex:1}
+.art-title{font-size:15.5px;font-weight:600;color:var(--black);line-height:1.45;flex:1}
 .art-date{font-size:11px;color:var(--muted);margin-top:16px}
 
 /* MENTIONS */
-.mention-list{display:flex;flex-direction:column;gap:10px}
-.mention-card{background:var(--white);border-radius:var(--rs);border-left:3px solid var(--g1);padding:16px 20px;cursor:pointer;transition:transform .15s;display:flex;gap:16px;align-items:flex-start;text-decoration:none}
-.mention-card:hover{transform:translateX(3px)}
-.mention-src{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-green);min-width:72px;padding-top:2px;flex-shrink:0}
-.mention-quote{font-size:14px;color:var(--black);line-height:1.55;flex:1}
-.mention-quote em{font-style:normal;color:var(--mid-green);font-weight:600}
-.mention-date{font-size:11px;color:var(--muted);min-width:52px;text-align:right;padding-top:2px;flex-shrink:0}
+.mention-list{display:flex;flex-direction:column;gap:12px}
+.mention-card{background:var(--white);border-radius:var(--r);border-left:4px solid var(--g1);padding:22px 24px;cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column;gap:8px;text-decoration:none}
+.mention-card:hover{transform:translateX(4px);box-shadow:0 6px 20px rgba(39,39,39,.07)}
+.mention-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mention-src{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-green)}
+.mention-date{font-size:11px;color:var(--muted)}
+.mention-title{font-size:15px;font-weight:700;color:var(--black);line-height:1.35;letter-spacing:-.2px}
+.mention-excerpt{font-size:13.5px;color:rgba(39,39,39,.65);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mention-excerpt em{font-style:normal;color:var(--mid-green);font-weight:600}
+.mention-cta{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--mid-green);margin-top:2px}
 
 /* FEATURED IN */
 .logo-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
@@ -294,27 +297,11 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
 <!-- =============================================
   SECTION 2 — MEDIA MENTIONS
   ┌─ 如何新增引用片段 ───────────────────────────
-  │ 1. 复制一个 <a class="mention-card"> 块
-  │ 2. 填写 data-pub / data-title / data-meta / data-body
-  │ 3. 在 mention-quote 内用 <em> 包住品牌名（高亮绿色）
-  └──────────────────────────────────────────────
-============================================= -->
-<section class="section" id="sec-mentions">
-  <div class="sec-head">
-    <span class="sec-num">03</span>
-    <span class="sec-title">Media Mentions</span>
-  </div>
-  <div class="mention-list">
-
-    <a class="mention-card" href="javascript:void(0)"
-      data-pub="Bloomberg"
-      data-title='Referenced in "The Social Commerce Reckoning"'
-      data-meta="Bloomberg · June 2026"
-      data-cover=""
-      data-body="&lt;p&gt;This mention appeared in Bloomberg&rsquo;s in-depth analysis of social commerce platforms and their ability to scale globally while maintaining community integrity.&lt;/p&gt;&lt;blockquote&gt;Platforms like MyyShop are demonstrating that social commerce can scale globally without losing the intimacy of community &mdash; a balance most marketplaces have failed to strike.&lt;/blockquote&gt;&lt;p&gt;The full piece is available to Bloomberg subscribers at bloomberg.com.&lt;/p&gt;">
-      <span class="mention-src">Bloomberg</span>
-      <span class="mention-quote">Platforms like <em>MyyShop</em> are demonstrating that social commerce can scale globally without losing the intimacy of community — a balance most marketplaces have failed to strike.</span>
-      <span class="mention-date">Jun 2026</span>
+  │ 1. 复制一个 <a class="mention-card">
+      <div class="mention-header"><span class="mention-src"></span><span class="mention-date"></span></div>
+      <div class="mention-title"></div>
+      <div class="mention-excerpt">Platforms like <em>MyyShop</em> are demonstrating that social commerce can scale globally without losing the intimacy of community — a balance most marketplaces have failed to strike.</div>
+      <span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
     </a>
 
     <a class="mention-card" href="javascript:void(0)"
@@ -323,9 +310,10 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
       data-meta="The Economist · May 2026"
       data-cover=""
       data-body="&lt;p&gt;The Economist&rsquo;s survey of cross-border trade platforms included MyyShop among a cohort of companies reshaping how small merchants access global markets.&lt;/p&gt;&lt;blockquote&gt;MyyShop has found an unlikely home at the intersection of the creator economy and cross-border trade, signing up thousands of micro-merchants in its first year.&lt;/blockquote&gt;">
-      <span class="mention-src">The Economist</span>
-      <span class="mention-quote"><em>MyyShop</em> has found an unlikely home at the intersection of the creator economy and cross-border trade, signing up thousands of micro-merchants in its first year.</span>
-      <span class="mention-date">May 2026</span>
+      <div class="mention-header"><span class="mention-src">The Economist</span><span class="mention-date">May 2026</span></div>
+      <div class="mention-title">Referenced in </div>
+      <div class="mention-excerpt"><em>MyyShop</em> has found an unlikely home at the intersection of the creator economy and cross-border trade, signing up thousands of micro-merchants in its first year.</div>
+      <span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
     </a>
 
     <a class="mention-card" href="javascript:void(0)"
@@ -334,9 +322,10 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
       data-meta="Reuters · April 2026"
       data-cover=""
       data-body="&lt;p&gt;Reuters covered the competitive landscape in social commerce, noting MyyShop&rsquo;s distinct positioning around emerging market sellers.&lt;/p&gt;&lt;blockquote&gt;Among the new wave of social commerce apps, MyyShop stands out for its focus on emerging market sellers accessing global buyers.&lt;/blockquote&gt;">
-      <span class="mention-src">Reuters</span>
-      <span class="mention-quote">Among the new wave of social commerce apps, <em>MyyShop</em> stands out for its focus on emerging market sellers accessing global buyers.</span>
-      <span class="mention-date">Apr 2026</span>
+      <div class="mention-header"><span class="mention-src">Reuters</span><span class="mention-date">April 2026</span></div>
+      <div class="mention-title">Referenced in </div>
+      <div class="mention-excerpt">Among the new wave of social commerce apps, <em>MyyShop</em> stands out for its focus on emerging market sellers accessing global buyers.</div>
+      <span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
     </a>
 
     <a class="mention-card" href="javascript:void(0)"
@@ -345,9 +334,10 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
       data-meta="Nikkei Asia · March 2026"
       data-cover=""
       data-body="&lt;p&gt;Nikkei Asia&rsquo;s investor roundup on the creator economy included MyyShop as a company drawing significant cross-border interest from VCs.&lt;/p&gt;&lt;blockquote&gt;MyyShop&rsquo;s model &mdash; putting creators at the center of the transaction &mdash; is attracting attention from investors across Southeast Asia and the Middle East.&lt;/blockquote&gt;">
-      <span class="mention-src">Nikkei Asia</span>
-      <span class="mention-quote"><em>MyyShop</em>'s model — putting creators at the center of the transaction — is attracting attention from investors across Southeast Asia and the Middle East.</span>
-      <span class="mention-date">Mar 2026</span>
+      <div class="mention-header"><span class="mention-src">Nikkei Asia</span><span class="mention-date">March 2026</span></div>
+      <div class="mention-title">Referenced in </div>
+      <div class="mention-excerpt"><em>MyyShop</em>'s model — putting creators at the center of the transaction — is attracting attention from investors across Southeast Asia and the Middle East.</div>
+      <span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
     </a>
 
     <!-- 在此处复制新 mention-card 块 ↑ -->
@@ -671,9 +661,11 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
       a.href = 'javascript:void(0)';
       setCardData(a, item);
       a.innerHTML =
-        '<span class="mention-src">' + escapeText(item.source_name) + '</span>' +
-        '<span class="mention-quote">' + (item.description || '') + '</span>' +
-        '<span class="mention-date">' + formatDate(item.published_at) + '</span>';
+        '<div class="mention-header"><span class="mention-src">' + escapeText(item.source_name) + '</span>' +
+        '<span class="mention-date">' + formatDate(item.published_at) + '</span></div>' +
+        '<div class="mention-title">' + escapeText(item.title || '') + '</div>' +
+        '<div class="mention-excerpt">' + (item.description || '') + '</div>' +
+        '<span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>';
       bindOpen(a, item, idx);
       list.appendChild(a);
     });
