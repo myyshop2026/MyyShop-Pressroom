@@ -73,7 +73,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .art-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .art-card{background:var(--white);border-radius:var(--r);padding:28px;border:1px solid rgba(39,39,39,.08);cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;min-height:160px;text-decoration:none}
 .art-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(39,39,39,.07)}
-.art-pub{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid-green);margin-bottom:10px}
+.art-pub{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid-green)}.art-card-meta{display:flex;align-items:center;gap:0;margin-bottom:10px}.art-card-date{font-size:11px;color:var(--muted);margin-left:6px}.art-card-date::before{content:"·";margin-right:6px}
 .art-title{font-size:15.5px;font-weight:600;color:var(--black);line-height:1.45;flex:1}
 .art-date{font-size:11px;color:var(--muted);margin-top:16px}
 
@@ -236,9 +236,8 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
       data-meta="By David Chen · May 14, 2026"
       data-cover=""
       data-body="&lt;p&gt;In the vast landscape of social commerce platforms, most burn bright and fade fast. MyyShop, the Singapore-based marketplace, seems to have found something more durable: a genuine community.&lt;/p&gt;&lt;blockquote&gt;&ldquo;Growth in isolation isn&rsquo;t growth. We want every seller&rsquo;s success to pull up the sellers around them.&rdquo;&lt;/blockquote&gt;&lt;h2&gt;The mechanics of community&lt;/h2&gt;&lt;p&gt;Unlike platforms that treat merchant relationships as purely transactional, MyyShop invests heavily in its seller community infrastructure. Monthly virtual markets, peer mentorship programs, and a public creator leaderboard are all part of the mix.&lt;/p&gt;">
-      <div class="art-pub">Forbes Asia</div>
+      <div class="art-card-meta"><span class="art-pub">Forbes Asia</span><span class="art-card-date">May 2026</span></div>
       <div class="art-title">The desert oasis of social commerce: inside MyyShop's community model</div>
-      <div class="art-date">May 2026</div>
     </a>
 
     <a class="art-card" href="javascript:void(0)"
@@ -247,9 +246,8 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
       data-meta="By Maya Okonkwo · April 8, 2026"
       data-cover=""
       data-body="&lt;p&gt;The creator economy has spawned a generation of platforms built around helping individuals monetize their audiences. MyyShop is one of a small group trying to take creators global.&lt;/p&gt;&lt;h2&gt;The trust layer&lt;/h2&gt;&lt;p&gt;What differentiates MyyShop from generic dropshipping platforms is its reputation system. Sellers build verified track records that travel with them, giving buyers confidence in merchants they&rsquo;ve never heard of.&lt;/p&gt;">
-      <div class="art-pub">Wired</div>
+      <div class="art-card-meta"><span class="art-pub">Wired</span><span class="art-card-date">April 2026</span></div>
       <div class="art-title">Creator-first platforms are rewriting the rules of global trade</div>
-      <div class="art-date">April 2026</div>
     </a>
 
     <a class="art-card" href="javascript:void(0)"
@@ -258,9 +256,8 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
       data-meta="By James Park · March 22, 2026"
       data-cover=""
       data-body="&lt;p&gt;MyyShop announced today it has closed a $40 million Series B round. The company will use the capital to accelerate expansion into the Middle East and Latin America.&lt;/p&gt;&lt;blockquote&gt;&ldquo;This funding lets us compress a three-year roadmap into twelve months.&rdquo;&lt;/blockquote&gt;">
-      <div class="art-pub">Business Insider</div>
+      <div class="art-card-meta"><span class="art-pub">Business Insider</span><span class="art-card-date">March 2026</span></div>
       <div class="art-title">MyyShop raises its Series B to expand creator monetization tools</div>
-      <div class="art-date">March 2026</div>
     </a>
 
     <!-- 在此处复制新 art-card 块 ↑ -->
@@ -561,7 +558,7 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
     setCardData(old, item);
     old.querySelector('.feat-pub').textContent = item.source_name || '';
     old.querySelector('.feat-title').textContent = item.title || '';
-    old.querySelector('.feat-meta').textContent = item.byline || '';
+    old.querySelector('.feat-meta').textContent = (item.byline ? item.byline + '  ·  ' : '') + resolveDate(item);
 
     var imgArea = old.querySelector('.feat-img');
     if (imgArea) {
@@ -638,9 +635,9 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
       a.href = 'javascript:void(0)';
       setCardData(a, item);
       a.innerHTML =
-        '<div class="art-pub">' + escapeText(item.source_name) + '</div>' +
-        '<div class="art-title">' + escapeText(item.title) + '</div>' +
-        '<div class="art-date">' + formatDate(item.published_at) + '</div>';
+        '<div class="art-card-meta"><span class="art-pub">' + escapeText(item.source_name) + '</span>' +
+        '<span class="art-card-date">' + resolveDate(item) + '</span></div>' +
+        '<div class="art-title">' + escapeText(item.title) + '</div>';
       bindOpen(a, item, idx);
       grid.appendChild(a);
     });
