@@ -170,7 +170,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
     // 填充下方可滚动的封面图+正文区域
     var coverHtml = item.media_url
       ? '<img class="art-cover" src="' + item.media_url + '" alt="' + (item.title || '') + '"/>'
-      : '<div class="art-cover-placeholder"><span>MyyShop Press</span></div>';
+      : '';
 
     bodyContainer.innerHTML =
       coverHtml +

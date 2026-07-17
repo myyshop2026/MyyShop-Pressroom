@@ -446,7 +446,7 @@ function openArt(el) {
   if (cover) {
     coverWrap.innerHTML = '<img class="art-cover" src="' + cover + '" alt="' + (el.dataset.title||'') + '"/>';
   } else {
-    coverWrap.innerHTML = '<div class="art-cover-placeholder"><span>Cover image</span></div>';
+    coverWrap.innerHTML = '';
   }
 
   document.getElementById('ap-body').innerHTML = el.dataset.body || '';
@@ -539,7 +539,18 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
   function formatDate(dateStr){
     if (!dateStr) return '';
     var d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
     return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  }
+
+  function dateFromByline(byline){
+    if (!byline) return '';
+    var parts = byline.split('·');
+    return parts.length > 1 ? parts[parts.length - 1].trim() : '';
+  }
+
+  function resolveDate(item){
+    return formatDate(item.published_at) || dateFromByline(item.byline) || '';
   }
 
   function renderFeature(item){
@@ -679,7 +690,7 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
       setCardData(a, item);
       a.innerHTML =
         '<div class="mention-header"><span class="mention-src">' + escapeText(item.source_name) + '</span>' +
-        '<span class="mention-date">' + formatDate(item.published_at) + '</span></div>' +
+        '<span class="mention-date">' + resolveDate(item) + '</span></div>' +
         '<div class="mention-title">' + escapeText(item.title || '') + '</div>' +
         '<div class="mention-excerpt">' + (item.description || '') + '</div>' +
         '<span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>';
