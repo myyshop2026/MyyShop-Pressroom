@@ -595,10 +595,16 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
     items.forEach(function(item){
       var div = document.createElement('div');
       div.className = 'logo-chip';
-      var imgHtml = item.media_url
-        ? '<img src="' + item.media_url + '" alt="' + (item.title||'') + '" onerror="this.style.display='none'">'
-        : '';
-      div.innerHTML = imgHtml + '<span>' + (item.title || '') + '</span>';
+      if (item.media_url) {
+        var img = document.createElement('img');
+        img.src = item.media_url;
+        img.alt = item.title || '';
+        img.onerror = function(){ this.style.display = 'none'; };
+        div.appendChild(img);
+      }
+      var span = document.createElement('span');
+      span.textContent = item.title || '';
+      div.appendChild(span);
       wall.appendChild(div);
     });
   }
