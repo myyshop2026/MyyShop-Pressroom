@@ -90,9 +90,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .mention-cta{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--mid-green);margin-top:2px}
 
 /* FEATURED IN */
-.logo-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
-.logo-chip{background:var(--white);border:1px solid rgba(39,39,39,.08);border-radius:var(--rs);padding:14px 10px;text-align:center;font-size:13px;font-weight:600;color:var(--muted);transition:border-color .2s,color .2s}
-.logo-chip:hover{border-color:var(--g1);color:var(--dark-green)}
+.logo-wall{display:flex;flex-direction:row;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;-ms-overflow-style:none;align-items:center}
+.logo-wall::-webkit-scrollbar{display:none}
+.logo-chip{background:var(--white);border:1px solid rgba(39,39,39,.08);border-radius:40px;padding:8px 16px 8px 8px;display:inline-flex;flex-direction:row;align-items:center;gap:8px;transition:border-color .15s,box-shadow .15s;cursor:default;flex-shrink:0;white-space:nowrap}
+.logo-chip:hover{border-color:var(--g1);box-shadow:0 3px 10px rgba(39,39,39,.07)}
+.logo-chip img{width:28px;height:28px;object-fit:contain;border-radius:50%;flex-shrink:0;display:block}
+.logo-chip span{font-size:12px;font-weight:600;color:var(--black);line-height:1;white-space:nowrap}
 
 
 /* CONTACT */
@@ -277,7 +280,39 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
     <span class="sec-title">Featured In</span>
   </div>
   <div class="logo-wall">
-    <div class="logo-chip">Shopify Blog</div>
+    <!-- 由后台数据库自动填充 -->
+  </div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=beforeitsnews.com&sz=64" alt="Before It's News" onerror="this.style.display='none'"><span>Before It's News</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=bignewsnetwork.com&sz=64" alt="Big News Network" onerror="this.style.display='none'"><span>Big News Network</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=techbullion.com&sz=64" alt="TechBullion" onerror="this.style.display='none'"><span>TechBullion</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=marketersmedia.com&sz=64" alt="Marketers Media" onerror="this.style.display='none'"><span>Marketers Media</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=atoallinks.com&sz=64" alt="AtoAllinks" onerror="this.style.display='none'"><span>AtoAllinks</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=bioviki.com&sz=64" alt="Bioviki" onerror="this.style.display='none'"><span>Bioviki</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=legendlifes.com&sz=64" alt="Legendlifes" onerror="this.style.display='none'"><span>Legendlifes</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=ventmagazines.co.uk&sz=64" alt="Vent Magazines" onerror="this.style.display='none'"><span>Vent Magazines</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=businessfig.com&sz=64" alt="BusinessFig" onerror="this.style.display='none'"><span>BusinessFig</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=theinscribermag.com&sz=64" alt="The Inscriber Mag" onerror="this.style.display='none'"><span>The Inscriber Mag</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=rantiethnicity.com&sz=64" alt="Rantiethnicity" onerror="this.style.display='none'"><span>Rantiethnicity</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=hitvofficial.com&sz=64" alt="Hitvofficial" onerror="this.style.display='none'"><span>Hitvofficial</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=copyenglish.com&sz=64" alt="CopyEnglish" onerror="this.style.display='none'"><span>CopyEnglish</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=alightmotionmodpro.com&sz=64" alt="Alight Motion" onerror="this.style.display='none'"><span>Alight Motion</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=stonesmentor.com&sz=64" alt="Stonesmentor" onerror="this.style.display='none'"><span>Stonesmentor</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=bitglobalnews.com&sz=64" alt="Bit Global News" onerror="this.style.display='none'"><span>Bit Global News</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=fashionsquill.com&sz=64" alt="FashionSquill" onerror="this.style.display='none'"><span>FashionSquill</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=celebviki.net&sz=64" alt="Celebviki" onerror="this.style.display='none'"><span>Celebviki</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=carstale.com&sz=64" alt="Carstale" onerror="this.style.display='none'"><span>Carstale</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=zaraatofficial.com&sz=64" alt="Zaraatofficial" onerror="this.style.display='none'"><span>Zaraatofficial</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=knowledgemandi.com&sz=64" alt="KnowledgeMandi" onerror="this.style.display='none'"><span>KnowledgeMandi</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=gearfixup.com&sz=64" alt="GearFixup" onerror="this.style.display='none'"><span>GearFixup</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=starbeliefs.com&sz=64" alt="StarBeliefs" onerror="this.style.display='none'"><span>StarBeliefs</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=techannouncer.com&sz=64" alt="TechAnnouncer" onerror="this.style.display='none'"><span>TechAnnouncer</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=englishsunglish.com&sz=64" alt="EnglishSunglish" onerror="this.style.display='none'"><span>EnglishSunglish</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=technomaniax.com&sz=64" alt="Technomaniax" onerror="this.style.display='none'"><span>Technomaniax</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=infospiritual.com&sz=64" alt="InfoSpiritual" onerror="this.style.display='none'"><span>InfoSpiritual</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=techlivo.com&sz=64" alt="Techlivo" onerror="this.style.display='none'"><span>Techlivo</span></div>
+    <div class="logo-chip"><img src="https://www.google.com/s2/favicons?domain=jbms360.com&sz=64" alt="JBMS360" onerror="this.style.display='none'"><span>JBMS360</span></div>
+    <!-- 在此处添加新 logo-chip ↑ -->
+  </div>
     <div class="logo-chip">Hacker News</div>
     <div class="logo-chip">ProductHunt</div>
     <div class="logo-chip">a16z Blog</div>
@@ -703,7 +738,12 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
     items.forEach(function(item){
       var div = document.createElement('div');
       div.className = 'logo-chip';
-      div.textContent = item.title || '';
+      var faviconUrl = item.media_url ||
+        ('https://www.google.com/s2/favicons?domain=' + (item.external_url || '').replace(/https?:\/\//, '').split('/')[0] + '&sz=64');
+      var imgTag = item.media_url
+        ? '<img src="' + item.media_url + '" alt="' + escapeText(item.title||'') + '" onerror="this.style.display='none'">'
+        : '<img src="' + faviconUrl + '" alt="' + escapeText(item.title||'') + '" onerror="this.style.display='none'">';
+      div.innerHTML = imgTag + '<span>' + escapeText(item.title || '') + '</span>';
       wall.appendChild(div);
     });
   }
