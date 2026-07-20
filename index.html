@@ -85,13 +85,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .mention-src{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-green)}
 .mention-date{font-size:11px;color:var(--muted)}
 .mention-title{font-size:15px;font-weight:700;color:var(--black);line-height:1.35;letter-spacing:-.2px}
+.mention-byline{font-size:12px;font-weight:600;color:var(--muted);margin-top:-2px}
 .mention-excerpt{font-size:13.5px;color:rgba(39,39,39,.65);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .mention-excerpt em{font-style:normal;color:var(--mid-green);font-weight:600}
 .mention-cta{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--mid-green);margin-top:2px}
 
 /* FEATURED IN */
-.logo-wall{display:flex;flex-direction:row;align-items:center;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none}
-.logo-wall::-webkit-scrollbar{display:none}
+.logo-wall{position:relative;overflow:hidden;padding:2px 0 6px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%)}
+.logo-track{display:flex;flex-direction:row;align-items:center;gap:8px;width:max-content;animation:logoMarquee 60s linear infinite;will-change:transform}
+.logo-wall:hover .logo-track{animation-play-state:paused}
+.logo-group{display:flex;flex-direction:row;align-items:center;gap:8px}
+@keyframes logoMarquee{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 4px))}}
+@media (prefers-reduced-motion:reduce){.logo-track{animation:none}.logo-wall{overflow-x:auto;scrollbar-width:none}}
 .logo-chip{display:inline-flex;flex-direction:row;align-items:center;gap:8px;background:var(--white);border:1px solid rgba(39,39,39,.08);border-radius:40px;padding:7px 14px 7px 7px;flex-shrink:0;transition:border-color .15s,box-shadow .15s;cursor:default}
 .logo-chip:hover{border-color:var(--g1);box-shadow:0 3px 10px rgba(39,39,39,.07)}
 .logo-chip img{width:26px;height:26px;object-fit:contain;border-radius:50%;display:block;flex-shrink:0}
@@ -568,44 +573,139 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
     }, 200);
   });
 
+  // ── Media Mentions:默认只显示前 5 条,其余收起 ──
+  var MENTION_LIMIT = 5;
+  var mentionListEl = null;
+  var mentionExpanded = false;
+
+  // 作者行:优先用后台的 byline,留空时回退到媒体名
+  function resolveAuthor(item){
+    var raw = (item.byline || '').trim();
+    if (raw.indexOf('\u00b7') > -1) raw = raw.split('\u00b7')[0].trim();  // 去掉 byline 里的日期,右上角已单独显示
+    if (!raw) raw = (item.source_name || '').trim();
+    if (!raw) return '';
+    return /^by\s/i.test(raw) ? raw : 'By ' + raw;
+  }
+
+  function layoutMentions(){
+    if (!mentionListEl) return;
+    var cards = mentionListEl.querySelectorAll('.mention-card');
+    var btn = document.getElementById('mentionShowMoreBtn');
+    if (!cards.length) { if (btn) btn.style.display = 'none'; return; }
+
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].style.display = (mentionExpanded || i < MENTION_LIMIT) ? '' : 'none';
+    }
+
+    var hidden = cards.length - MENTION_LIMIT;
+    if (btn) {
+      if (hidden > 0) {
+        btn.style.display = '';
+        btn.textContent = mentionExpanded ? '收起 \u2191' : '查看更多 (' + hidden + ') \u2193';
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+  }
+
   function renderMentions(items){
     var list = document.querySelector('.mention-list');
     if (!list) return;
+    mentionListEl = list;
+    mentionExpanded = false;
     list.innerHTML = '';
+
     items.forEach(function(item, idx){
       var a = document.createElement('a');
       a.className = 'mention-card';
       a.href = 'javascript:void(0)';
       setCardData(a, item);
+
+      var author = resolveAuthor(item);
       a.innerHTML =
         '<div class="mention-header"><span class="mention-src">' + escapeText(item.source_name) + '</span>' +
         '<span class="mention-date">' + resolveDate(item) + '</span></div>' +
         '<div class="mention-title">' + escapeText(item.title || '') + '</div>' +
+        (author ? '<div class="mention-byline">' + escapeText(author) + '</div>' : '') +
         '<div class="mention-excerpt">' + (item.description || '') + '</div>' +
         '<span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>';
       bindOpen(a, item, idx);
       list.appendChild(a);
     });
+
+    var existingBtn = document.getElementById('mentionShowMoreBtn');
+    if (existingBtn) existingBtn.remove();
+
+    if (items.length > MENTION_LIMIT) {
+      var btn = document.createElement('button');
+      btn.id = 'mentionShowMoreBtn';
+      btn.type = 'button';
+      btn.style.cssText = 'display:inline-flex;align-items:center;gap:6px;margin-top:16px;background:none;border:1px solid rgba(39,39,39,.15);padding:8px 18px;border-radius:24px;font-size:13px;font-weight:600;color:var(--dark-green);cursor:pointer;font-family:inherit';
+      btn.addEventListener('click', function(){
+        var willExpand = !mentionExpanded;
+        if (willExpand) {
+          trackEvent('press_mentions_expand', { hidden_count: items.length - MENTION_LIMIT });
+        }
+        mentionExpanded = willExpand;
+        layoutMentions();
+      });
+      list.insertAdjacentElement('afterend', btn);
+    }
+
+    layoutMentions();
   }
 
+  function buildLogoChip(item){
+    var div = document.createElement('div');
+    div.className = 'logo-chip';
+    if (item.media_url) {
+      var img = document.createElement('img');
+      img.src = item.media_url;
+      img.alt = item.title || '';
+      img.onerror = function(){ this.style.display = 'none'; };
+      div.appendChild(img);
+    }
+    var span = document.createElement('span');
+    span.textContent = item.title || '';
+    div.appendChild(span);
+    return div;
+  }
+
+  // 走马灯:两组相同内容首尾相接,平移一组宽度后瞬间归零,视觉上无缝
   function renderLogos(items){
     var wall = document.querySelector('.logo-wall');
     if (!wall) return;
     wall.innerHTML = '';
-    items.forEach(function(item){
-      var div = document.createElement('div');
-      div.className = 'logo-chip';
-      if (item.media_url) {
-        var img = document.createElement('img');
-        img.src = item.media_url;
-        img.alt = item.title || '';
-        img.onerror = function(){ this.style.display = 'none'; };
-        div.appendChild(img);
+    if (!items.length) return;
+
+    var track = document.createElement('div');
+    track.className = 'logo-track';
+
+    var groupA = document.createElement('div');
+    groupA.className = 'logo-group';
+    items.forEach(function(item){ groupA.appendChild(buildLogoChip(item)); });
+    track.appendChild(groupA);
+    wall.appendChild(track);
+
+    requestAnimationFrame(function(){
+      // logo 太少时先重复铺满一屏,避免转一圈出现大片空白
+      var reps = 1, guard = 0;
+      while (groupA.offsetWidth < wall.offsetWidth && guard < 10) {
+        items.forEach(function(item){ groupA.appendChild(buildLogoChip(item)); });
+        reps++; guard++;
       }
-      var span = document.createElement('span');
-      span.textContent = item.title || '';
-      div.appendChild(span);
-      wall.appendChild(div);
+
+      var groupB = document.createElement('div');
+      groupB.className = 'logo-group';
+      groupB.setAttribute('aria-hidden', 'true');
+      for (var r = 0; r < reps; r++) {
+        items.forEach(function(item){ groupB.appendChild(buildLogoChip(item)); });
+      }
+      track.appendChild(groupB);
+
+      // 恒定速度约 40px/秒,logo 越多转一圈越久,观感一致
+      var dur = Math.max(20, Math.round(groupA.offsetWidth / 40));
+      track.style.animationDuration = dur + 's';
     });
   }
 
@@ -618,7 +718,18 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
       .order('sort_order', { ascending: true });
 
     if (result.error) {
-      console.error('加载PR内容失败:', result.error);
+      var e = result.error;
+      console.error(
+        '加载PR内容失败 →',
+        'message:', e.message || String(e),
+        '| code:', e.code,
+        '| details:', e.details,
+        '| hint:', e.hint
+      );
+      // 本地 file:// 打开或在沙箱预览里运行时,浏览器会按跨域拦截,属正常现象
+      if (location.protocol === 'file:' || location.origin === 'null') {
+        console.warn('当前不是 http(s) 环境,Supabase 请求会被浏览器跨域拦截。请访问已部署的线上地址查看真实效果。');
+      }
       return; // 加载失败时不动原有内容,避免页面变空白
     }
     var data = result.data || [];
