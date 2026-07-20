@@ -331,6 +331,26 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
   JAVASCRIPT
 ============================================= -->
 <script>
+// 正文里的图片多数是从原文粘贴过来的外链图。部分站点开了防盗链,
+// 带 Referer 的请求会被拒绝 —— 去掉 Referer 通常就能正常加载。
+// 仍然加载不出来的(原图已删/域名失效),直接隐藏,避免页面出现破图图标。
+function hardenBodyImages(root) {
+  if (!root) return;
+  var imgs = root.querySelectorAll('img');
+  for (var i = 0; i < imgs.length; i++) {
+    (function(img){
+      img.setAttribute('referrerpolicy', 'no-referrer');
+      img.setAttribute('loading', 'lazy');
+      img.onerror = function(){
+        console.warn('正文图片加载失败,已隐藏:', img.getAttribute('src'));
+        img.style.display = 'none';
+      };
+      // 已经加载失败过的(complete 但没有尺寸),立即隐藏
+      if (img.complete && img.naturalWidth === 0) img.style.display = 'none';
+    })(imgs[i]);
+  }
+}
+
 function openArt(el) {
   document.getElementById('ap-pub').textContent   = el.dataset.pub   || '';
   document.getElementById('ap-title').textContent = el.dataset.title || '';
@@ -344,7 +364,9 @@ function openArt(el) {
     coverWrap.innerHTML = '';
   }
 
-  document.getElementById('ap-body').innerHTML = el.dataset.body || '';
+  var bodyEl = document.getElementById('ap-body');
+  bodyEl.innerHTML = el.dataset.body || '';
+  hardenBodyImages(bodyEl);
 
   var page = document.getElementById('art-page');
   page.classList.add('active');
