@@ -90,9 +90,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .mention-cta{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--mid-green);margin-top:2px}
 
 /* FEATURED IN */
-.logo-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
-.logo-chip{background:var(--white);border:1px solid rgba(39,39,39,.08);border-radius:var(--rs);padding:14px 10px;text-align:center;font-size:13px;font-weight:600;color:var(--muted);transition:border-color .2s,color .2s}
-.logo-chip:hover{border-color:var(--g1);color:var(--dark-green)}
+.logo-wall{display:flex;flex-direction:row;align-items:center;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none}
+.logo-wall::-webkit-scrollbar{display:none}
+.logo-chip{display:inline-flex;flex-direction:row;align-items:center;gap:8px;background:var(--white);border:1px solid rgba(39,39,39,.08);border-radius:40px;padding:7px 14px 7px 7px;flex-shrink:0;transition:border-color .15s,box-shadow .15s;cursor:default}
+.logo-chip:hover{border-color:var(--g1);box-shadow:0 3px 10px rgba(39,39,39,.07)}
+.logo-chip img{width:26px;height:26px;object-fit:contain;border-radius:50%;display:block;flex-shrink:0}
+.logo-chip span{font-size:12px;font-weight:600;color:var(--black);white-space:nowrap;line-height:1}
 
 
 /* CONTACT */
@@ -189,16 +192,8 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
 
 <!-- =============================================
   SECTION 1 — IN THE NEWS
-  ┌─ 如何新增文章 ───────────────────────────────
-  │ 1. 复制下方任意一个 <a class="art-card"> 块
-  │ 2. 粘贴到 art-grid 里（保持在注释行上方）
-  │ 3. 填写 data-pub / data-title / data-meta /
-  │    data-cover（封面图URL，没有可留空）/
-  │    data-body（文章正文HTML）
-  │ 4. 同步修改卡片内的 art-pub / art-title / art-date 显示文字
-  │
-  │ 如需更换大特稿卡，修改 feat-card 上的同名属性即可。
-  └──────────────────────────────────────────────
+  内容全部来自运营后台（content_block = article / feature），
+  请勿在此手动添加卡片，否则会与后台数据重复显示。
 ============================================= -->
 <section class="section" id="sec-news">
   <div class="sec-head">
@@ -206,18 +201,14 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
     <span class="sec-title">In the News</span>
   </div>
 
-  <!-- ★ 大特稿卡 — 每次只保留一张 ★ -->
-  <a class="feat-card" href="javascript:void(0)"
-    data-pub="TechCrunch"
-    data-title="How MyyShop is opening global e-commerce to everyday creators"
-    data-meta="By Sarah Lin · June 2026"
-    data-cover=""
-    data-body="&lt;p&gt;When MyyShop launched its creator marketplace two years ago, it made a bet most platforms considered foolish: that the seller experience mattered as much as the buyer experience. Today, with over 200,000 active merchants across 40 countries, that bet is paying off.&lt;/p&gt;&lt;blockquote&gt;&ldquo;We were told global trade was too complex for small creators. We believed the opposite — that simplicity was the missing infrastructure.&rdquo;&lt;/blockquote&gt;&lt;h2&gt;A community built on trust&lt;/h2&gt;&lt;p&gt;The platform&rsquo;s logo — a smiling face drawn from the curves of the Dunhuang desert — captures the company&rsquo;s founding philosophy: commerce should feel human, even when it&rsquo;s global.&lt;/p&gt;&lt;p&gt;Average seller revenue has grown 3.4&times; in the past 12 months. Retention is among the highest in the sector.&lt;/p&gt;&lt;h2&gt;What comes next&lt;/h2&gt;&lt;p&gt;MyyShop&rsquo;s Series B will fund expansion into the Middle East and Latin America. New tools for live commerce and affiliate programs are expected later this year.&lt;/p&gt;">
+  <!-- 大特稿卡容器：内容由后台数据渲染，无数据时自动隐藏 -->
+  <a class="feat-card" href="javascript:void(0)" style="display:none"
+    data-pub="" data-title="" data-meta="" data-cover="" data-body="">
     <div class="feat-body">
       <div>
-        <div class="feat-pub">TechCrunch</div>
-        <div class="feat-title">How MyyShop is opening global e-commerce to everyday creators</div>
-        <div class="feat-meta">Full coverage · June 2026</div>
+        <div class="feat-pub"></div>
+        <div class="feat-title"></div>
+        <div class="feat-meta"></div>
       </div>
       <span class="feat-cta">Read full story <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
     </div>
@@ -227,48 +218,14 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
     </div>
   </a>
 
-  <!-- 文章卡片格 -->
-  <div class="art-grid">
-
-    <a class="art-card" href="javascript:void(0)"
-      data-pub="Forbes Asia"
-      data-title="The desert oasis of social commerce: inside MyyShop's community model"
-      data-meta="By David Chen · May 14, 2026"
-      data-cover=""
-      data-body="&lt;p&gt;In the vast landscape of social commerce platforms, most burn bright and fade fast. MyyShop, the Singapore-based marketplace, seems to have found something more durable: a genuine community.&lt;/p&gt;&lt;blockquote&gt;&ldquo;Growth in isolation isn&rsquo;t growth. We want every seller&rsquo;s success to pull up the sellers around them.&rdquo;&lt;/blockquote&gt;&lt;h2&gt;The mechanics of community&lt;/h2&gt;&lt;p&gt;Unlike platforms that treat merchant relationships as purely transactional, MyyShop invests heavily in its seller community infrastructure. Monthly virtual markets, peer mentorship programs, and a public creator leaderboard are all part of the mix.&lt;/p&gt;">
-      <div class="art-card-meta"><span class="art-pub">Forbes Asia</span><span class="art-card-date">May 2026</span></div>
-      <div class="art-title">The desert oasis of social commerce: inside MyyShop's community model</div>
-    </a>
-
-    <a class="art-card" href="javascript:void(0)"
-      data-pub="Wired"
-      data-title="Creator-first platforms are rewriting the rules of global trade"
-      data-meta="By Maya Okonkwo · April 8, 2026"
-      data-cover=""
-      data-body="&lt;p&gt;The creator economy has spawned a generation of platforms built around helping individuals monetize their audiences. MyyShop is one of a small group trying to take creators global.&lt;/p&gt;&lt;h2&gt;The trust layer&lt;/h2&gt;&lt;p&gt;What differentiates MyyShop from generic dropshipping platforms is its reputation system. Sellers build verified track records that travel with them, giving buyers confidence in merchants they&rsquo;ve never heard of.&lt;/p&gt;">
-      <div class="art-card-meta"><span class="art-pub">Wired</span><span class="art-card-date">April 2026</span></div>
-      <div class="art-title">Creator-first platforms are rewriting the rules of global trade</div>
-    </a>
-
-    <a class="art-card" href="javascript:void(0)"
-      data-pub="Business Insider"
-      data-title="MyyShop raises its Series B to expand creator monetization tools"
-      data-meta="By James Park · March 22, 2026"
-      data-cover=""
-      data-body="&lt;p&gt;MyyShop announced today it has closed a $40 million Series B round. The company will use the capital to accelerate expansion into the Middle East and Latin America.&lt;/p&gt;&lt;blockquote&gt;&ldquo;This funding lets us compress a three-year roadmap into twelve months.&rdquo;&lt;/blockquote&gt;">
-      <div class="art-card-meta"><span class="art-pub">Business Insider</span><span class="art-card-date">March 2026</span></div>
-      <div class="art-title">MyyShop raises its Series B to expand creator monetization tools</div>
-    </a>
-
-    <!-- 在此处复制新 art-card 块 ↑ -->
-
-  </div>
+  <!-- 文章卡片格：内容由后台数据渲染 -->
+  <div class="art-grid"></div>
 </section>
 
 <!-- =============================================
   SECTION 3 — FEATURED IN
   ┌─ 如何新增媒体名称 ───────────────────────────
-  │ 复制一行 <div class="logo-chip">媒体名称</div> 即可
+  │ 复制一行 即可
   └──────────────────────────────────────────────
 ============================================= -->
 <section class="section alt" id="sec-featuredin">
@@ -277,86 +234,21 @@ footer{background:var(--black);color:rgba(255,255,255,.55);padding:52px 40px 32p
     <span class="sec-title">Featured In</span>
   </div>
   <div class="logo-wall">
-    <div class="logo-chip">Shopify Blog</div>
-    <div class="logo-chip">Hacker News</div>
-    <div class="logo-chip">ProductHunt</div>
-    <div class="logo-chip">a16z Blog</div>
-    <div class="logo-chip">TechInAsia</div>
-    <div class="logo-chip">KrASIA</div>
-    <div class="logo-chip">36Kr</div>
-    <div class="logo-chip">Pandaily</div>
-    <div class="logo-chip">EcommerceDB</div>
-    <div class="logo-chip">InfluenceWeek</div>
-    <!-- 在此处添加新 logo-chip ↑ -->
+    <!-- 内容来自运营后台（content_block = logo） -->
   </div>
 </section>
 
 <!-- =============================================
   SECTION 3 — MEDIA MENTIONS
-  ┌─ 如何新增引用片段 ───────────────────────────
-  │ 1. 复制一个 <a class="mention-card"> 块
-  │ 2. 填写 data-pub / data-title / data-meta / data-body
-  │ 3. 在 mention-excerpt 内用 <em> 包住品牌名（高亮绿色）
-  └──────────────────────────────────────────────
+  内容全部来自运营后台（content_block = mention），
+  请勿在此手动添加卡片，否则会与后台数据重复显示。
 ============================================= -->
 <section class="section" id="sec-mentions">
   <div class="sec-head">
     <span class="sec-num">03</span>
     <span class="sec-title">Media Mentions</span>
   </div>
-  <div class="mention-list">
-
-    <a class="mention-card" href="javascript:void(0)"
-      data-pub="Bloomberg"
-      data-title='Referenced in "The Social Commerce Reckoning"'
-      data-meta="Bloomberg · June 2026"
-      data-cover=""
-      data-body="&lt;p&gt;This mention appeared in Bloomberg&rsquo;s in-depth analysis of social commerce platforms and their ability to scale globally while maintaining community integrity.&lt;/p&gt;&lt;blockquote&gt;Platforms like MyyShop are demonstrating that social commerce can scale globally without losing the intimacy of community &mdash; a balance most marketplaces have failed to strike.&lt;/blockquote&gt;&lt;p&gt;The full piece is available to Bloomberg subscribers at bloomberg.com.&lt;/p&gt;">
-      <div class="mention-header"><span class="mention-src">Bloomberg</span><span class="mention-date">Jun 2026</span></div>
-      <div class="mention-title">Referenced in "The Social Commerce Reckoning"</div>
-      <div class="mention-excerpt">Platforms like <em>MyyShop</em> are demonstrating that social commerce can scale globally without losing the intimacy of community — a balance most marketplaces have failed to strike.</div>
-      <span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
-    </a>
-
-    <a class="mention-card" href="javascript:void(0)"
-      data-pub="The Economist"
-      data-title='Referenced in "The New Silk Road"'
-      data-meta="The Economist · May 2026"
-      data-cover=""
-      data-body="&lt;p&gt;The Economist&rsquo;s survey of cross-border trade platforms included MyyShop among a cohort of companies reshaping how small merchants access global markets.&lt;/p&gt;&lt;blockquote&gt;MyyShop has found an unlikely home at the intersection of the creator economy and cross-border trade, signing up thousands of micro-merchants in its first year.&lt;/blockquote&gt;">
-      <div class="mention-header"><span class="mention-src">The Economist</span><span class="mention-date">May 2026</span></div>
-      <div class="mention-title">Referenced in </div>
-      <div class="mention-excerpt"><em>MyyShop</em> has found an unlikely home at the intersection of the creator economy and cross-border trade, signing up thousands of micro-merchants in its first year.</div>
-      <span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
-    </a>
-
-    <a class="mention-card" href="javascript:void(0)"
-      data-pub="Reuters"
-      data-title='Referenced in "Social Commerce Heats Up"'
-      data-meta="Reuters · April 2026"
-      data-cover=""
-      data-body="&lt;p&gt;Reuters covered the competitive landscape in social commerce, noting MyyShop&rsquo;s distinct positioning around emerging market sellers.&lt;/p&gt;&lt;blockquote&gt;Among the new wave of social commerce apps, MyyShop stands out for its focus on emerging market sellers accessing global buyers.&lt;/blockquote&gt;">
-      <div class="mention-header"><span class="mention-src">Reuters</span><span class="mention-date">April 2026</span></div>
-      <div class="mention-title">Referenced in </div>
-      <div class="mention-excerpt">Among the new wave of social commerce apps, <em>MyyShop</em> stands out for its focus on emerging market sellers accessing global buyers.</div>
-      <span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
-    </a>
-
-    <a class="mention-card" href="javascript:void(0)"
-      data-pub="Nikkei Asia"
-      data-title='Referenced in "The Investor View on Creator Commerce"'
-      data-meta="Nikkei Asia · March 2026"
-      data-cover=""
-      data-body="&lt;p&gt;Nikkei Asia&rsquo;s investor roundup on the creator economy included MyyShop as a company drawing significant cross-border interest from VCs.&lt;/p&gt;&lt;blockquote&gt;MyyShop&rsquo;s model &mdash; putting creators at the center of the transaction &mdash; is attracting attention from investors across Southeast Asia and the Middle East.&lt;/blockquote&gt;">
-      <div class="mention-header"><span class="mention-src">Nikkei Asia</span><span class="mention-date">March 2026</span></div>
-      <div class="mention-title">Referenced in </div>
-      <div class="mention-excerpt"><em>MyyShop</em>'s model — putting creators at the center of the transaction — is attracting attention from investors across Southeast Asia and the Middle East.</div>
-      <span class="mention-cta">Read more <i class="ti ti-arrow-right" aria-hidden="true"></i></span>
-    </a>
-
-    <!-- 在此处复制新 mention-card 块 ↑ -->
-
-  </div>
+  <div class="mention-list"></div>
 </section>
 
 
@@ -703,7 +595,10 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
     items.forEach(function(item){
       var div = document.createElement('div');
       div.className = 'logo-chip';
-      div.textContent = item.title || '';
+      var imgHtml = item.media_url
+        ? '<img src="' + item.media_url + '" alt="' + (item.title||'') + '" onerror="this.style.display='none'">'
+        : '';
+      div.innerHTML = imgHtml + '<span>' + (item.title || '') + '</span>';
       wall.appendChild(div);
     });
   }
