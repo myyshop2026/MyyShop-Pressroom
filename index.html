@@ -453,11 +453,62 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
     el.dataset.body = appendReadMoreLink(item.description || '', item);
   }
 
+  // ── 日期统一格式:全站一律输出 "July 6th, 2026" ──
+  // 运营在"作者/日期说明"里手写的日期五花八门(July 6th, 2026 / 2nd June 2026 / 6 July 2026),
+  // 这里统一解析后重新格式化,保证页面上不会出现两种写法。
+  var MONTH_NAMES = ['January','February','March','April','May','June',
+                     'July','August','September','October','November','December'];
+
+  function ordinalDay(n){
+    var suf = ['th','st','nd','rd'], v = n % 100;
+    return n + (suf[(v - 20) % 10] || suf[v] || suf[0]);
+  }
+
+  function composeDate(year, monthIdx, day){
+    return MONTH_NAMES[monthIdx] + ' ' + ordinalDay(day) + ', ' + year;
+  }
+
+  function monthIndexOf(name){
+    name = String(name).toLowerCase();
+    for (var i = 0; i < 12; i++){
+      if (MONTH_NAMES[i].toLowerCase().indexOf(name.replace('.','')) === 0) return i;
+    }
+    return -1;
+  }
+
+  function normalizeDate(raw){
+    if (!raw) return '';
+    var s = String(raw).trim();
+    if (!s) return '';
+
+    // 数据库标准日期:2026-07-06 / 2026-07-06T12:00:00Z
+    // 手动取年月日,不走 new Date(),避免 UTC 时区把日期减掉一天
+    var iso = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (iso) return composeDate(+iso[1], +iso[2] - 1, +iso[3]);
+
+    // "July 6th, 2026" / "July 6, 2026" / "Jul 6 2026"
+    var mdy = s.match(/^([A-Za-z.]+)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$/);
+    if (mdy){
+      var mi = monthIndexOf(mdy[1]);
+      if (mi > -1) return composeDate(+mdy[3], mi, +mdy[2]);
+    }
+
+    // "2nd June 2026" / "6 July 2026"
+    var dmy = s.match(/^(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z.]+),?\s+(\d{4})$/);
+    if (dmy){
+      var mi2 = monthIndexOf(dmy[2]);
+      if (mi2 > -1) return composeDate(+dmy[3], mi2, +dmy[1]);
+    }
+
+    // 兜底交给浏览器
+    var d = new Date(s);
+    if (!isNaN(d.getTime())) return composeDate(d.getFullYear(), d.getMonth(), d.getDate());
+
+    return s; // 实在识别不了就原样显示,不丢信息
+  }
+
   function formatDate(dateStr){
-    if (!dateStr) return '';
-    var d = new Date(dateStr);
-    if (isNaN(d.getTime())) return dateStr;
-    return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    return normalizeDate(dateStr);
   }
 
   function dateFromByline(byline){
@@ -467,7 +518,7 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
   }
 
   function resolveDate(item){
-    return formatDate(item.published_at) || dateFromByline(item.byline) || '';
+    return normalizeDate(item.published_at) || normalizeDate(dateFromByline(item.byline)) || '';
   }
 
   function renderFeature(item){
@@ -478,7 +529,9 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
     setCardData(old, item);
     old.querySelector('.feat-pub').textContent = item.source_name || '';
     old.querySelector('.feat-title').textContent = item.title || '';
-    old.querySelector('.feat-meta').textContent = (item.byline ? item.byline + '  ·  ' : '') + resolveDate(item);
+    // byline 里常常已经带了日期,先剥掉再和标准化后的日期拼,避免出现两次
+    var featMeta = [resolveAuthor(item), resolveDate(item)].filter(Boolean).join('  ·  ');
+    old.querySelector('.feat-meta').textContent = featMeta;
 
     var imgArea = old.querySelector('.feat-img');
     if (imgArea) {

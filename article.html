@@ -102,10 +102,73 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
   var SUPABASE_KEY = 'sb_publishable_5Ffo4fNgEMGpFFtLFkh9ug_dWObFB1g';
   var client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+  // 日期格式与列表页保持完全一致:"July 6th, 2026"
+  var MONTH_NAMES = ['January','February','March','April','May','June',
+                     'July','August','September','October','November','December'];
+
+  function ordinalDay(n){
+    var suf = ['th','st','nd','rd'], v = n % 100;
+    return n + (suf[(v - 20) % 10] || suf[v] || suf[0]);
+  }
+
+  function composeDate(year, monthIdx, day){
+    return MONTH_NAMES[monthIdx] + ' ' + ordinalDay(day) + ', ' + year;
+  }
+
+  function monthIndexOf(name){
+    name = String(name).toLowerCase();
+    for (var i = 0; i < 12; i++){
+      if (MONTH_NAMES[i].toLowerCase().indexOf(name.replace('.','')) === 0) return i;
+    }
+    return -1;
+  }
+
+  function normalizeDate(raw){
+    if (!raw) return '';
+    var s = String(raw).trim();
+    if (!s) return '';
+
+    var iso = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (iso) return composeDate(+iso[1], +iso[2] - 1, +iso[3]);
+
+    var mdy = s.match(/^([A-Za-z.]+)\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$/);
+    if (mdy){
+      var mi = monthIndexOf(mdy[1]);
+      if (mi > -1) return composeDate(+mdy[3], mi, +mdy[2]);
+    }
+
+    var dmy = s.match(/^(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z.]+),?\s+(\d{4})$/);
+    if (dmy){
+      var mi2 = monthIndexOf(dmy[2]);
+      if (mi2 > -1) return composeDate(+dmy[3], mi2, +dmy[1]);
+    }
+
+    var d = new Date(s);
+    if (!isNaN(d.getTime())) return composeDate(d.getFullYear(), d.getMonth(), d.getDate());
+
+    return s;
+  }
+
   function formatDate(dateStr){
-    if (!dateStr) return '';
-    var d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    return normalizeDate(dateStr);
+  }
+
+  // byline 里往往写成 "By 某某 · July 6th, 2026",拆开后日期单独标准化,避免重复或格式不一
+  function buildMeta(item){
+    var raw = (item.byline || '').trim();
+    var author = raw, dateText = '';
+
+    if (raw.indexOf('·') > -1) {
+      var parts = raw.split('·');
+      dateText = parts.pop().trim();
+      author = parts.join('·').trim();
+    }
+
+    var date = normalizeDate(item.published_at) || normalizeDate(dateText) || '';
+    if (!author) author = '';
+    else if (!/^by\s/i.test(author)) author = 'By ' + author;
+
+    return [author, date].filter(Boolean).join('  ·  ');
   }
 
   function wrapBodyWithSourceLinks(bodyHtml, item){
@@ -164,7 +227,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
     // 填充吸顶固定的头部区域(来源标签、标题、作者日期)
     document.getElementById('apPub').textContent = item.source_name || '';
     document.getElementById('apTitle').textContent = item.title || '';
-    document.getElementById('apMeta').textContent = item.byline || formatDate(item.published_at);
+    document.getElementById('apMeta').textContent = buildMeta(item);
     document.getElementById('stickyHeader').style.display = '';
 
     // 填充下方可滚动的封面图+正文区域
