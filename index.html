@@ -52,16 +52,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .nav-cta:hover{background:#3a3d40}
 
 /* HERO — 白底居中,对齐 Figma 91:2024 */
-.hero{background:var(--warm-off);position:relative;overflow:hidden;padding-block:clamp(56px,7vw,88px)}
-.hero .wrap{display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;z-index:1}
-.hero-eye{font-size:13px;font-weight:700;letter-spacing:2.08px;text-transform:uppercase;color:var(--dark-green);margin-bottom:16px}
-.hero h1{font-family:'Cabinet Grotesk','DM Sans',sans-serif;font-size:clamp(40px,5.6vw,68px);font-weight:800;color:var(--black);line-height:1.06;letter-spacing:-1.92px;max-width:768px;margin-bottom:16px}
+.hero{background:var(--warm-off);position:relative;overflow:hidden;padding-block:40px}
+.hero .wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;position:relative;z-index:1}
+.hero-eye{font-size:13px;font-weight:700;letter-spacing:2.08px;text-transform:uppercase;color:var(--dark-green)}
+.hero h1{font-family:'Cabinet Grotesk','DM Sans',sans-serif;font-size:clamp(40px,5.6vw,68px);font-weight:800;color:var(--black);line-height:1.06;letter-spacing:-1.92px;max-width:768px}
 .hero h1 span{color:var(--dark-green);-webkit-text-fill-color:currentColor}
 .hero-sub{color:var(--black);opacity:.85;font-size:16px;max-width:56ch;line-height:1.84}
 
 /* SECTIONS */
 /* ── Tab 切换(In the News / Media Mentions),对齐 Figma 93:3457 ── */
-.press-tabs{display:flex;gap:16px;justify-content:center;margin-bottom:40px;flex-wrap:wrap}
+.press-tabs{display:flex;gap:24px;justify-content:center;margin-bottom:60px;flex-wrap:wrap}
 .press-tab{font-family:inherit;font-size:clamp(16px,1.7vw,20px);font-weight:700;letter-spacing:-.4px;color:var(--black);background:none;border:1.5px solid rgba(39,39,39,.16);border-radius:999px;padding:9.5px 22px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;white-space:nowrap}
 .press-tab:hover{border-color:rgba(39,39,39,.32)}
 .press-tab.active{background:var(--dark-green);border-color:var(--dark-green);color:#fff}
@@ -70,7 +70,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 /* 居中容器:tab 面板内容统一 1080 居中 */
 .press-panels{display:flex;flex-direction:column;align-items:center}
 .press-panels > *{width:100%}
-.section{padding-block:clamp(40px,6vw,68px);border-bottom:1px solid rgba(39,39,39,.08)}
+.section{padding-block:40px 60px;border-bottom:1px solid rgba(39,39,39,.08)}
 .section.alt{background:transparent}
 .section.sand{background:var(--sand)}
 .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:28px}
@@ -147,15 +147,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 /* FOOTER */
 footer{background:var(--ink);color:#ffffff;padding-block:32px 32px;font-family:'DM Sans',sans-serif}
 .footer-disclaimer{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:28px}
-.footer-top{display:grid;grid-template-columns:200px 1.2fr 1fr 1.4fr auto;gap:40px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-top{display:grid;grid-template-columns:auto 280px 200px 1fr 160px;gap:40px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.08)}
 .footer-logo-img{height:26px;width:auto;display:block}
 .footer-col-title{font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:#fff;margin-bottom:18px}
 .footer-col ul{list-style:none}
 .footer-col ul li{margin-bottom:14px}
-.footer-col ul li a{font-size:14px;color:rgba(255,255,255,.7);transition:color .15s;text-decoration:none}
+.footer-col ul li a{font-size:14px;color:rgba(255,255,255,.7);transition:color .15s;text-decoration:none;white-space:nowrap}
 .footer-col ul li a:hover{color:var(--g1)}
 .footer-social{display:flex;flex-direction:column;gap:14px}
-.footer-social a{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,.7);transition:color .15s;text-decoration:none}
+.footer-social a{display:inline-flex;align-items:flex-start;gap:10px;font-size:14px;color:rgba(255,255,255,.7);transition:color .15s;text-decoration:none;line-height:1.4}
 .footer-social a:hover{color:var(--g1)}
 .footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:24px;gap:16px;flex-wrap:wrap}
 .footer-copy{font-size:13px;color:rgba(255,255,255,.4)}
