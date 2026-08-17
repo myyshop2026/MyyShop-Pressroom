@@ -86,10 +86,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .feat-img:not(.has-img)::after{content:'MYYSHOP';font-size:15px;font-weight:800;letter-spacing:.14em;color:rgba(11,98,45,.16);position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .feat-img img{width:100%;height:auto;display:block}
 .feat-badge{position:absolute;top:14px;left:14px;background:var(--black);color:#fff;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:14px;z-index:2}
-/* 来源徽章(比如 "Influencer Marketing Hub" 的 TOP 榜单章):和来源名同一行、右对齐,不叠在图片上 */
-.feat-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.feat-pub{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-green);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.feat-award{width:36px;flex-shrink:0;filter:drop-shadow(0 1px 4px rgba(0,0,0,.12))}
+.feat-pub{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-green)}
+/* 来源徽章(比如 "Influencer Marketing Hub" 的 TOP 榜单章):叠在封面图右上角,和左上角的 Featured 角标对称 */
+.feat-img .feat-award{position:absolute;top:14px;right:14px;width:50px;height:auto;z-index:2;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
 .feat-title{font-size:clamp(22px,2.6vw,28px);font-weight:700;color:var(--black);line-height:1.28;letter-spacing:-.4px}
 .feat-meta{font-size:12px;color:var(--muted)}
 .feat-cta{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--dark-green)}
@@ -104,10 +103,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .art-cover-thumb:not(.has-img)::after{content:'MYYSHOP';font-size:15px;font-weight:800;letter-spacing:.14em;color:rgba(11,98,45,.16)}
 .art-cover-thumb img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
 .art-cbody{display:flex;flex-direction:column;gap:8px;padding:24px 16px}
-/* 来源徽章:和来源名同一行、右对齐,不叠在封面图上 */
-.art-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.art-pub{font-size:14px;font-weight:500;letter-spacing:.078em;text-transform:uppercase;color:var(--dark-green);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.art-award{width:26px;flex-shrink:0;margin-top:1px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.1))}
+.art-pub{font-size:14px;font-weight:500;letter-spacing:.078em;text-transform:uppercase;color:var(--dark-green);line-height:1.25}
+/* 来源徽章:叠在封面图右上角 */
+.art-cover-thumb .art-award{position:absolute;top:10px;right:10px;width:36px;height:auto;z-index:2;filter:drop-shadow(0 2px 5px rgba(0,0,0,.22))}
 .art-title{font-size:20px;font-weight:700;color:var(--black);line-height:1.5;letter-spacing:-.3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .art-daterow{display:flex;align-items:center;gap:8px;margin-top:2px}
 .art-daterow svg{width:20px;height:20px;flex-shrink:0;color:var(--muted)}
@@ -618,12 +616,9 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
       : '';
 
     a.innerHTML =
-      '<div class="feat-img' + (hasImg ? ' has-img' : '') + '"><span class="feat-badge">Featured</span>' + imgInner + '</div>' +
+      '<div class="feat-img' + (hasImg ? ' has-img' : '') + '"><span class="feat-badge">Featured</span>' + awardInner + imgInner + '</div>' +
       '<div class="feat-body">' +
-        '<div class="feat-head">' +
-          '<div class="feat-pub">' + escapeText(item.source_name || '') + '</div>' +
-          awardInner +
-        '</div>' +
+        '<div class="feat-pub">' + escapeText(item.source_name || '') + '</div>' +
         '<div class="feat-title">' + escapeText(item.title || '') + '</div>' +
         (metaText ? '<div class="feat-meta">' + escapeText(metaText) + '</div>' : '') +
         '<div class="feat-cta">Read more →</div>' +
@@ -685,12 +680,9 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
         : '';
 
       a.innerHTML =
-        '<div class="art-cover-thumb' + (hasImg ? ' has-img' : '') + '">' + coverInner + '</div>' +
+        '<div class="art-cover-thumb' + (hasImg ? ' has-img' : '') + '">' + awardInner + coverInner + '</div>' +
         '<div class="art-cbody">' +
-          '<div class="art-head">' +
-            '<div class="art-pub">' + escapeText(item.source_name || '') + '</div>' +
-            awardInner +
-          '</div>' +
+          '<div class="art-pub">' + escapeText(item.source_name || '') + '</div>' +
           '<div class="art-title">' + escapeText(item.title || '') + '</div>' +
           '<div class="art-daterow"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 8h14M7 2.5v3M13 2.5v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="art-date">' + resolveDate(item) + '</span></div>' +
         '</div>';
