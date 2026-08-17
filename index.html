@@ -93,13 +93,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .feat-card:hover .feat-cta{color:var(--mid-green)}
 
 /* ARTICLE GRID — 3列图片卡,对齐 Figma 91:2325 / 卡片组件 103:653 */
-.art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;align-items:start}
+.art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
 .art-card{background:var(--white);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;text-decoration:none;border:1px solid rgba(39,39,39,.06)}
 .art-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(39,39,39,.09)}
-.art-cover-thumb{width:100%;min-height:160px;position:relative;overflow:hidden;background:linear-gradient(135deg,#EFF4ED,#E3F1ED);flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.art-cover-thumb.has-img{min-height:0;display:block} /* 有真实图片时按原始宽高比展示,不再固定高度裁切 */
+/* 封面图统一按第一篇文章的比例硬编码留位(16:9),不同比例的图用 object-fit:contain 居中留白,不裁切、不再逐张变高 */
+.art-cover-thumb{width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;background:linear-gradient(135deg,#EFF4ED,#E3F1ED);flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .art-cover-thumb:not(.has-img)::after{content:'MYYSHOP';font-size:15px;font-weight:800;letter-spacing:.14em;color:rgba(11,98,45,.16)}
-.art-cover-thumb img{width:100%;height:auto;display:block}
+.art-cover-thumb img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
 .art-cbody{display:flex;flex-direction:column;gap:8px;padding:24px 16px}
 .art-pub{font-size:14px;font-weight:500;letter-spacing:.078em;text-transform:uppercase;color:var(--dark-green);line-height:1.25}
 .art-title{font-size:20px;font-weight:700;color:var(--black);line-height:1.5;letter-spacing:-.3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -265,9 +265,6 @@ footer .wrap{max-width:var(--maxw);margin-inline:auto}
 ============================================= -->
 <section class="section" id="sec-news">
   <div class="wrap">
-    <!-- 头版文章:优先取运营标记的 feature,未标记则自动取最新一篇 article 顶上(该文章仍会保留在下方列表里) -->
-    <div id="feat-slot" style="display:none"></div>
-
     <!-- Tab 切换按钮 -->
     <div class="press-tabs">
       <button type="button" class="press-tab active" data-tab="news" id="tab-news">In the News</button>
@@ -275,8 +272,9 @@ footer .wrap{max-width:var(--maxw);margin-inline:auto}
     </div>
 
     <div class="press-panels">
-      <!-- 面板1:In the News — 3列图片卡,由后台 article 渲染 -->
+      <!-- 面板1:In the News — 头版文章(优先取运营标记的 feature,未标记则自动取最新一篇 article,该文章仍会保留在下方列表里)+ 3列图片卡,由后台 article 渲染 -->
       <div class="tab-panel active" id="panel-news">
+        <div id="feat-slot" style="display:none"></div>
         <div class="art-grid"></div>
       </div>
 
