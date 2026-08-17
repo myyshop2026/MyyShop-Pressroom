@@ -77,26 +77,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 .sec-num{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .sec-title{font-size:clamp(20px,2.4vw,26px);font-weight:700;letter-spacing:-.4px;color:var(--black);font-family:'Cabinet Grotesk','DM Sans',sans-serif}
 
-/* FEATURE CARD */
-.feat-card{background:var(--black);border-radius:var(--r);overflow:hidden;display:grid;grid-template-columns:42% 58%;cursor:pointer;transition:transform .2s;margin-bottom:16px;text-decoration:none}
-.feat-card:hover{transform:translateY(-2px)}
-.feat-body{padding:clamp(26px,3.2vw,38px) clamp(24px,3vw,34px);display:flex;flex-direction:column;justify-content:space-between}
-.feat-img{background:linear-gradient(135deg,var(--dark-green) 0%,var(--mid-green) 100%);min-height:280px;position:relative;overflow:hidden}
+/* FEATURE CARD — 头版主打文章:白底卡片 + 左侧绿色边框 + 图片角标(方案A,去掉大片纯黑) */
+.feat-card{background:var(--white);border-radius:var(--r);overflow:hidden;display:grid;grid-template-columns:42% 58%;align-items:start;border-left:5px solid var(--g1);box-shadow:0 2px 16px rgba(39,39,39,.07);cursor:pointer;transition:transform .2s,box-shadow .2s;margin-bottom:16px;text-decoration:none}
+.feat-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(39,39,39,.1)}
+.feat-body{padding:clamp(24px,3vw,34px);display:flex;flex-direction:column;justify-content:center;gap:10px}
+.feat-img{background:linear-gradient(135deg,#EFF4ED,#E3F1ED);min-height:220px;position:relative;overflow:hidden}
 .feat-img.has-img{min-height:0} /* 有真实图片时,不再用兜底高度,完全跟着图片的原始比例走 */
-.feat-deco{position:absolute;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));opacity:.18}
-.feat-pub{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g1);margin-bottom:12px}
-.feat-title{font-size:clamp(20px,2.4vw,26px);font-weight:700;color:var(--white);line-height:1.3;letter-spacing:-.3px;margin-bottom:16px}
-.feat-meta{font-size:12px;color:rgba(255,255,255,.35)}
-.feat-cta{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--g1);margin-top:20px}
-.feat-card:hover .feat-cta{color:var(--g2)}
+.feat-img:not(.has-img)::after{content:'MYYSHOP';font-size:15px;font-weight:800;letter-spacing:.14em;color:rgba(11,98,45,.16);position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.feat-img img{width:100%;height:auto;display:block}
+.feat-badge{position:absolute;top:14px;left:14px;background:var(--black);color:#fff;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:14px;z-index:2}
+.feat-pub{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-green)}
+.feat-title{font-size:clamp(22px,2.6vw,28px);font-weight:700;color:var(--black);line-height:1.28;letter-spacing:-.4px}
+.feat-meta{font-size:12px;color:var(--muted)}
+.feat-cta{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--dark-green)}
+.feat-card:hover .feat-cta{color:var(--mid-green)}
 
 /* ARTICLE GRID — 3列图片卡,对齐 Figma 91:2325 / 卡片组件 103:653 */
-.art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;align-items:start}
 .art-card{background:var(--white);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;text-decoration:none;border:1px solid rgba(39,39,39,.06)}
 .art-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(39,39,39,.09)}
-.art-cover-thumb{width:100%;height:254px;position:relative;overflow:hidden;background:linear-gradient(135deg,#EFF4ED,#E3F1ED);flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.art-cover-thumb::after{content:'MYYSHOP';font-size:15px;font-weight:800;letter-spacing:.14em;color:rgba(11,98,45,.16)}
-.art-cover-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1}
+.art-cover-thumb{width:100%;min-height:160px;position:relative;overflow:hidden;background:linear-gradient(135deg,#EFF4ED,#E3F1ED);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.art-cover-thumb.has-img{min-height:0;display:block} /* 有真实图片时按原始宽高比展示,不再固定高度裁切 */
+.art-cover-thumb:not(.has-img)::after{content:'MYYSHOP';font-size:15px;font-weight:800;letter-spacing:.14em;color:rgba(11,98,45,.16)}
+.art-cover-thumb img{width:100%;height:auto;display:block}
 .art-cbody{display:flex;flex-direction:column;gap:8px;padding:24px 16px}
 .art-pub{font-size:14px;font-weight:500;letter-spacing:.078em;text-transform:uppercase;color:var(--dark-green);line-height:1.25}
 .art-title{font-size:20px;font-weight:700;color:var(--black);line-height:1.5;letter-spacing:-.3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -219,7 +222,7 @@ footer .wrap{max-width:var(--maxw);margin-inline:auto}
   <div class="wrap row">
     <a class="nav-brand" href="https://www.myyshop.com"><img class="nav-logo-img" alt="MyyShop"></a>
     <div class="nav-divider"></div>
-    <span class="nav-page-name">Pressroom</span>
+<span class="nav-page-name">Newsrrom</span>
     <div class="nav-links">
       <a class="nav-link" href="#sec-news">In the News</a>
       <a class="nav-link" href="#sec-featuredin">Featured In</a>
@@ -241,11 +244,30 @@ footer .wrap{max-width:var(--maxw);margin-inline:auto}
 </section>
 
 <!-- =============================================
-  Tab 切换区(In the News / Media Mentions)+ Featured In
-  三块内容全部来自运营后台,请勿手动写死卡片
+  FEATURED IN — 由后台 logo 渲染(横向走马灯)
+  位置调整:移到 Hero 下方、头版文章/新闻列表上方
+============================================= -->
+<section class="section alt" id="sec-featuredin">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">Featured In</span>
+    </div>
+    <div class="logo-wall">
+      <!-- 内容来自运营后台（content_block = logo） -->
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+  头版文章 + Tab 切换区(In the News / Media Mentions)
+  内容全部来自运营后台,请勿手动写死卡片
 ============================================= -->
 <section class="section" id="sec-news">
   <div class="wrap">
+    <!-- 头版文章:优先取运营标记的 feature,未标记则自动取最新一篇 article 顶上(该文章仍会保留在下方列表里) -->
+    <div id="feat-slot" style="display:none"></div>
+
     <!-- Tab 切换按钮 -->
     <div class="press-tabs">
       <button type="button" class="press-tab active" data-tab="news" id="tab-news">In the News</button>
@@ -262,21 +284,6 @@ footer .wrap{max-width:var(--maxw);margin-inline:auto}
       <div class="tab-panel" id="panel-mentions">
         <div class="mention-list"></div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- =============================================
-  FEATURED IN — 由后台 logo 渲染(横向走马灯)
-============================================= -->
-<section class="section alt" id="sec-featuredin">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">02</span>
-      <span class="sec-title">Featured In</span>
-    </div>
-    <div class="logo-wall">
-      <!-- 内容来自运营后台（content_block = logo） -->
     </div>
   </div>
 </section>
@@ -564,8 +571,51 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
     return normalizeDate(item.published_at) || normalizeDate(dateFromByline(item.byline)) || '';
   }
 
-  // 设计改版后 In the News 不再有大特稿卡,feature 数据并入普通文章流
-  function renderFeature(item){ /* no-op:保留以兼容 loadPRContent 调用 */ }
+  // 头版文章排序用:把日期换算成可比较的时间戳,兼容各种手写日期格式
+  function dateTimestamp(item){
+    var raw = item.published_at || dateFromByline(item.byline) || '';
+    if (!raw) return 0;
+    raw = String(raw).trim();
+    var iso = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (iso) return new Date(+iso[1], +iso[2] - 1, +iso[3]).getTime();
+    var cleaned = raw.replace(/(\d+)(st|nd|rd|th)/i, '$1');
+    var t = Date.parse(cleaned);
+    return isNaN(t) ? 0 : t;
+  }
+
+  // 头版文章:白底卡片 + 左侧绿色边框 + 图片角标"Featured",复用已有的 .feat-card 样式(此前设计改版后一直是空函数未启用)
+  function renderFeature(item){
+    var slot = document.getElementById('feat-slot');
+    if (!slot) return;
+    if (!item) { slot.innerHTML = ''; slot.style.display = 'none'; return; }
+
+    var a = document.createElement('a');
+    a.className = 'feat-card';
+    a.href = 'javascript:void(0)';
+    setCardData(a, item);
+
+    var hasImg = !!item.media_url;
+    var imgInner = hasImg
+      ? '<img src="' + item.media_url + '" alt="' + escapeText(item.title || '') + '" referrerpolicy="no-referrer" loading="lazy" onerror="this.parentElement.classList.remove(\'has-img\');this.remove()">'
+      : '';
+
+    var authorPart = resolveAuthor(item);
+    var metaText = [authorPart, resolveDate(item)].filter(Boolean).join('  ·  ');
+
+    a.innerHTML =
+      '<div class="feat-img' + (hasImg ? ' has-img' : '') + '"><span class="feat-badge">Featured</span>' + imgInner + '</div>' +
+      '<div class="feat-body">' +
+        '<div class="feat-pub">' + escapeText(item.source_name || '') + '</div>' +
+        '<div class="feat-title">' + escapeText(item.title || '') + '</div>' +
+        (metaText ? '<div class="feat-meta">' + escapeText(metaText) + '</div>' : '') +
+        '<div class="feat-cta">Read more →</div>' +
+      '</div>';
+
+    bindOpen(a, item, 0);
+    slot.innerHTML = '';
+    slot.appendChild(a);
+    slot.style.display = '';
+  }
 
   // ── 文章网格:响应式只显示"一行",超出的收起 ──
   var articleGridEl = null;
@@ -607,13 +657,14 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
       a.href = 'javascript:void(0)';
       setCardData(a, item);
 
-      // 封面图:有 media_url 就用图,没有则保留渐变底(CSS 已设)
-      var coverInner = item.media_url
-        ? '<img src="' + item.media_url + '" alt="' + escapeText(item.title || '') + '" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">'
+      // 封面图:有 media_url 就按原始宽高比展示,没有则保留渐变底占位(CSS 已设)
+      var hasImg = !!item.media_url;
+      var coverInner = hasImg
+        ? '<img src="' + item.media_url + '" alt="' + escapeText(item.title || '') + '" referrerpolicy="no-referrer" loading="lazy" onerror="this.parentElement.classList.remove(\'has-img\');this.remove()">'
         : '';
 
       a.innerHTML =
-        '<div class="art-cover-thumb">' + coverInner + '</div>' +
+        '<div class="art-cover-thumb' + (hasImg ? ' has-img' : '') + '">' + coverInner + '</div>' +
         '<div class="art-cbody">' +
           '<div class="art-pub">' + escapeText(item.source_name || '') + '</div>' +
           '<div class="art-title">' + escapeText(item.title || '') + '</div>' +
@@ -839,7 +890,13 @@ document.querySelectorAll('.feat-card, .art-card, .mention-card').forEach(functi
     var mentions = data.filter(function(i){ return i.content_block === 'mention'; });
     var logos = data.filter(function(i){ return i.content_block === 'logo'; });
 
-    renderFeature(feature);
+    // 头版:运营没有手动指定 feature 时,自动取最新一篇 article 顶上;
+    // 该文章仍会保留在下方 In the News 列表里(允许重复出现)
+    var headline = feature || articles.slice().sort(function(a, b){
+      return dateTimestamp(b) - dateTimestamp(a);
+    })[0] || null;
+
+    renderFeature(headline);
     renderArticles(articles);
     renderMentions(mentions);
     renderLogos(logos);
