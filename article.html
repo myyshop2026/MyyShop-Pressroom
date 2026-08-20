@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Article — MyyShop Pressroom</title>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-T8T33F8138"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FQ0DDNP6W"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-T8T33F8138');
+  gtag('config', 'G-6FQ0DDNP6W');
   function trackEvent(n,p){gtag('event',n,p);}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -238,9 +238,94 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
     bodyContainer.innerHTML =
       coverHtml +
       '<div class="art-body">' + wrapBodyWithSourceLinks(item.description || '', item) + '</div>';
+
+    // 埋点:文章内容渲染完成后,广播事件供下面的"阅读深度/停留时长"追踪脚本使用
+    window.dispatchEvent(new CustomEvent('articleLoaded', {
+      detail: {
+        id: item.id,
+        title: item.title || '',
+        source_name: item.source_name || ''
+      }
+    }));
   }
 
   loadArticle();
+})();
+</script>
+
+<!-- =============================================
+  埋点:阅读深度(滚动进度)与停留时长追踪
+  设计思路和 Academy 视频完播率追踪一致——按里程碑打点,
+  避免每次滚动/每秒都发请求刷爆事件量。
+============================================= -->
+<script>
+(function(){
+  var SCROLL_MILESTONES = [25, 50, 75, 100];
+  var TIME_MILESTONES = [15, 30, 60, 120]; // 秒,页面可见时的累计"活跃阅读时长"
+
+  var meta = null;
+  var bodyEl = null;
+  var scrollHit = {};
+  var timeHit = {};
+  var activeSeconds = 0;
+  var timerId = null;
+
+  function baseParams(){
+    return {
+      content_id: meta.id,
+      content_title: meta.title || '',
+      source_name: meta.source_name || ''
+    };
+  }
+
+  function mergeParams(extra){
+    var p = baseParams();
+    for (var k in extra) { p[k] = extra[k]; }
+    return p;
+  }
+
+  function checkScroll(){
+    if (!bodyEl) return;
+    var total = bodyEl.offsetHeight;
+    if (total <= 0) return;
+    var viewportH = window.innerHeight || document.documentElement.clientHeight;
+    var rectTop = bodyEl.getBoundingClientRect().top;
+    // 已经滚过正文顶部多少像素(相对可视区域底边),换算成正文阅读百分比
+    var scrolledPast = viewportH - rectTop;
+    var pct = Math.max(0, Math.min(100, Math.round((scrolledPast / total) * 100)));
+
+    SCROLL_MILESTONES.forEach(function(m){
+      if (pct >= m && !scrollHit[m]){
+        scrollHit[m] = true;
+        trackEvent('press_read_scroll', mergeParams({ percent: m }));
+      }
+    });
+  }
+
+  function tickTime(){
+    if (document.hidden) return; // 只统计页面可见时的时间,不计后台标签页时长
+    activeSeconds++;
+    TIME_MILESTONES.forEach(function(m){
+      if (activeSeconds >= m && !timeHit[m]){
+        timeHit[m] = true;
+        trackEvent('press_read_time', mergeParams({ seconds: m }));
+      }
+    });
+  }
+
+  window.addEventListener('articleLoaded', function(e){
+    meta = e.detail || {};
+    bodyEl = document.getElementById('articleBody');
+    scrollHit = {};
+    timeHit = {};
+    activeSeconds = 0;
+
+    checkScroll();
+    window.addEventListener('scroll', checkScroll, { passive: true });
+
+    if (timerId) clearInterval(timerId);
+    timerId = setInterval(tickTime, 1000);
+  });
 })();
 </script>
 </body>
