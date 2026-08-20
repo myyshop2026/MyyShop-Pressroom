@@ -10,8 +10,21 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-6FQ0DDNP6W');
+  // 文章标题是异步加载后才通过 document.title 设置的,如果用 GA4 默认的自动 page_view,
+  // 打点时机会早于标题更新,导致该事件里记录的还是加载中的占位标题。
+  // 这里关掉自动 page_view,改成文章标题(以及 content_title/content_id)就绪后再手动补发,
+  // 这样"页面浏览"和其余埋点(点击/深度/时长)用的就是同一份文章标题数据了。
+  gtag('config', 'G-6FQ0DDNP6W', { send_page_view: false });
   function trackEvent(n,p){gtag('event',n,p);}
+  function sendPageView(extra){
+    var params = {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: window.location.pathname + window.location.search
+    };
+    if (extra) { for (var k in extra) { params[k] = extra[k]; } }
+    gtag('event', 'page_view', params);
+  }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -206,6 +219,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 
     if (!id) {
       bodyContainer.innerHTML = '<div class="state-msg">No article specified.</div>';
+      sendPageView();
       return;
     }
 
@@ -218,11 +232,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--warm-off);color:var(--bla
 
     if (result.error || !result.data) {
       bodyContainer.innerHTML = '<div class="state-msg">This article could not be found, or is not published.</div>';
+      sendPageView();
       return;
     }
 
     var item = result.data;
     document.title = (item.title || 'Article') + ' — MyyShop Pressroom';
+    sendPageView({ content_id: item.id, content_title: item.title || '' });
 
     // 填充吸顶固定的头部区域(来源标签、标题、作者日期)
     document.getElementById('apPub').textContent = item.source_name || '';
